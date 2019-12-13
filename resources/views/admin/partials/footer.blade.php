@@ -1,0 +1,1 @@
+<footer class="footer">Todos los derecho reservados - © activoscp.rubalcavacontadores.com {{ date('Y') }} </footer>
