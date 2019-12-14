@@ -3,8 +3,8 @@
         <div class="navbar-header">
             <a class="navbar-brand" href="{{ route('home') }}">
                 <b>
-                    <img src="{{ asset('/admins/img/caja.png') }}" alt="icono" class="dark-logo" width="50" />
-                    <img src="{{ asset('/admins/img/caja.png') }}" alt="icono" class="light-logo" width="50" />
+                    <img src="{{ asset('/admins/img/caja.png') }}" alt="icono" class="dark-logo" width="70" />
+                    <img src="{{ asset('/admins/img/caja.png') }}" alt="icono" class="light-logo" width="70" />
                 </b>
                 <span>
                     <img src="{{ asset('/admins/img/activos.png') }}" alt="logo" class="dark-logo" />   
