@@ -16,6 +16,30 @@
                         <li><a href="{{ route('usuarios.index') }}">Lista</a></li>
                     </ul>
                 </li>
+                <li> <a class="has-arrow waves-effect waves-dark" href="#" aria-expanded="false"><i class="mdi mdi-account-multiple"></i><span class="hide-menu">Jugadores</span></a>
+                    <ul aria-expanded="false" class="collapse">
+                        <li><a href="#">Registrar</a></li>
+                        <li><a href="#">Lista</a></li>
+                    </ul>
+                </li>
+                <li> <a class="has-arrow waves-effect waves-dark" href="#" aria-expanded="false"><i class="mdi mdi-account-multiple"></i><span class="hide-menu">Clubes</span></a>
+                    <ul aria-expanded="false" class="collapse">
+                        <li><a href="#">Registrar</a></li>
+                        <li><a href="#">Lista</a></li>
+                    </ul>
+                </li>
+                <li> <a class="has-arrow waves-effect waves-dark" href="#" aria-expanded="false"><i class="mdi mdi-account-multiple"></i><span class="hide-menu">Torneos</span></a>
+                    <ul aria-expanded="false" class="collapse">
+                        <li><a href="#">Registrar</a></li>
+                        <li><a href="#">Lista</a></li>
+                    </ul>
+                </li>
+                <li> <a class="has-arrow waves-effect waves-dark" href="#" aria-expanded="false"><i class="mdi mdi-account-multiple"></i><span class="hide-menu">Juegos</span></a>
+                    <ul aria-expanded="false" class="collapse">
+                        <li><a href="#">Registrar</a></li>
+                        <li><a href="#">Lista</a></li>
+                    </ul>
+                </li>
             </ul>
         </nav>
     </div>

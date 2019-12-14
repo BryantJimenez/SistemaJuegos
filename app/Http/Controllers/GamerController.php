@@ -2,10 +2,10 @@
 
 namespace App\Http\Controllers;
 
-use App\Phase;
+use App\Gamer;
 use Illuminate\Http\Request;
 
-class PhaseController extends Controller
+class GamerController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -41,10 +41,10 @@ class PhaseController extends Controller
     /**
      * Display the specified resource.
      *
-     * @param  \App\Phase  $phase
+     * @param  \App\Gamer  $gamer
      * @return \Illuminate\Http\Response
      */
-    public function show(Phase $phase)
+    public function show(Gamer $gamer)
     {
         //
     }
@@ -52,10 +52,10 @@ class PhaseController extends Controller
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  \App\Phase  $phase
+     * @param  \App\Gamer  $gamer
      * @return \Illuminate\Http\Response
      */
-    public function edit(Phase $phase)
+    public function edit(Gamer $gamer)
     {
         //
     }
@@ -64,10 +64,10 @@ class PhaseController extends Controller
      * Update the specified resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Phase  $phase
+     * @param  \App\Gamer  $gamer
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Phase $phase)
+    public function update(Request $request, Gamer $gamer)
     {
         //
     }
@@ -75,10 +75,10 @@ class PhaseController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param  \App\Phase  $phase
+     * @param  \App\Gamer  $gamer
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Phase $phase)
+    public function destroy(Gamer $gamer)
     {
         //
     }

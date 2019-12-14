@@ -21,8 +21,8 @@ class CreateCouplesTable extends Migration
             $table->timestamps();
 
             #Relations
-            $table->foreign('player1_id')->references('id')->on('users')->onDelete('cascade')->onUpdate('cascade');
-            $table->foreign('player2_id')->references('id')->on('users')->onDelete('cascade')->onUpdate('cascade');
+            $table->foreign('player1_id')->references('id')->on('gamers')->onDelete('cascade')->onUpdate('cascade');
+            $table->foreign('player2_id')->references('id')->on('gamers')->onDelete('cascade')->onUpdate('cascade');
             $table->foreign('club_id')->references('id')->on('clubs')->onDelete('cascade')->onUpdate('cascade');
         });
     }
