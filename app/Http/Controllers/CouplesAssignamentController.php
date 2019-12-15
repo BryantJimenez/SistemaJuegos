@@ -2,10 +2,9 @@
 
 namespace App\Http\Controllers;
 
-use App\Club;
 use Illuminate\Http\Request;
 
-class ClubController extends Controller
+class CouplesAssignamentController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -14,7 +13,7 @@ class ClubController extends Controller
      */
     public function index()
     {
-        return view('admin.clubs.index');
+         return view('admin.clubs.couples_assignament_list');
     }
 
     /**
@@ -24,7 +23,7 @@ class ClubController extends Controller
      */
     public function create()
     {
-        return view('admin.clubs.create');
+        return view('admin.clubs.couples_assignament.create');
     }
 
     /**
@@ -41,10 +40,10 @@ class ClubController extends Controller
     /**
      * Display the specified resource.
      *
-     * @param  \App\Club  $club
+     * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show(Club $club)
+    public function show($id)
     {
         //
     }
@@ -52,22 +51,22 @@ class ClubController extends Controller
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  \App\Club  $club
+     * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function edit(Club $club)
+    public function edit($id)
     {
-         return view('admin.clubs.edit');
+        //
     }
 
     /**
      * Update the specified resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Club  $club
+     * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Club $club)
+    public function update(Request $request, $id)
     {
         //
     }
@@ -75,10 +74,10 @@ class ClubController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param  \App\Club  $club
+     * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Club $club)
+    public function destroy($id)
     {
         //
     }
