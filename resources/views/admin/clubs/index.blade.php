@@ -41,7 +41,6 @@
 									<button class="btn btn-danger btn-circle btn-sm"><i class="fa fa-trash"></i></button>
 								</td>
 							</tr>
-							@endforeach
 						</tbody>
 					</table>
 				</div>

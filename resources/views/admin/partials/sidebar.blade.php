@@ -24,8 +24,8 @@
                 </li>
                 <li> <a class="has-arrow waves-effect waves-dark" href="#" aria-expanded="false"><i class="fa fa-building"></i><span class="hide-menu">Clubes</span></a>
                     <ul aria-expanded="false" class="collapse">
-                        <li><a href="#">Registrar</a></li>
-                        <li><a href="#">Lista</a></li>
+                        <li><a href="{{ route('clubes.create') }}">Registrar</a></li>
+                        <li><a href="{{ route('clubes.index') }}">Lista</a></li>
                     </ul>
                 </li>
                 <li> <a class="has-arrow waves-effect waves-dark" href="#" aria-expanded="false"><i class="fa fa-trophy"></i><span class="hide-menu">Torneos</span></a>

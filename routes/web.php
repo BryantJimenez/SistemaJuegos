@@ -59,10 +59,10 @@ Route::delete('/clubes/{slug}', 'ClubController@destroy')->name('clubes.destroy'
 //Asignación de Parejas por Torneos
 
 //Club
-Route::get('/clubes', 'CouplesAssignamentController@index')->name('couples_assignament_list');
-Route::get('/clubes/registrar', 'CouplesAssignamentController@create')->name('couples_assignament.');
-Route::post('/clubes', 'CouplesAssignamentController@store')->name('couples_assignament.store');
-Route::get('/clubes/{slug}', 'CouplesAssignamentController@show')->name('couples_assignament.show');
-Route::get('/clubes/{slug}/editar', 'CouplesAssignamentController@edit')->name('couples_assignament.edit');
-Route::put('/clubes/{slug}', 'CouplesAssignamentController@update')->name('couples_assignament.update');
-Route::delete('/clubes/{slug}', 'CouplesAssignamentController@destroy')->name('couples_assignament.destroy');
+// Route::get('/clubes', 'CouplesAssignamentController@index')->name('couples_assignament_list');
+// Route::get('/clubes/registrar', 'CouplesAssignamentController@create')->name('couples_assignament.');
+// Route::post('/clubes', 'CouplesAssignamentController@store')->name('couples_assignament.store');
+// Route::get('/clubes/{slug}', 'CouplesAssignamentController@show')->name('couples_assignament.show');
+// Route::get('/clubes/{slug}/editar', 'CouplesAssignamentController@edit')->name('couples_assignament.edit');
+// Route::put('/clubes/{slug}', 'CouplesAssignamentController@update')->name('couples_assignament.update');
+// Route::delete('/clubes/{slug}', 'CouplesAssignamentController@destroy')->name('couples_assignament.destroy');
