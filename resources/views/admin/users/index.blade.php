@@ -23,9 +23,9 @@
 						<thead>
 							<tr>
 								<th>#</th>
-								<th>Nombre</th>
+								<th>Nombre Completo</th>
 								<th>Correo Electrónico</th>
-								<th>Permisos</th>
+								<th>Estado</th>
 								<th>Acciones</th>
 							</tr>
 						</thead>
@@ -33,9 +33,9 @@
 							@foreach($users as $user)
 							<tr>
 								<td>{{ $num++ }}</td>
-								<td>{{ $user->name }}</td>
+								<td>{{ $user->name." ".$user->lastname }}</td>
 								<td>{{ $user->email }}</td>
-								<td>{{ $user->rol }}</td>
+								<td>{!! userState($user->state) !!}</td>
 								<td class="d-flex">
 									<button class="btn btn-primary btn-circle btn-sm" onclick="showUser('{{ $user->slug }}')"><i class="fa fa-eye"></i></button>&nbsp;&nbsp;
 									<a class="btn btn-info btn-circle btn-sm" href="{{ route('usuarios.edit', ['slug' => $user->slug]) }}"><i class="fa fa-edit"></i></a>&nbsp;&nbsp;
@@ -63,15 +63,15 @@
 			<div class="modal-body">
 				<div class="row">
 					<div class="col-6">
-						<img src="{{ asset('/admins/img/users/usuario.png') }}" class="rounded img-fluid" alt="Foto del usuario">
+						<img src="{{ asset('/admins/img/users/usuario.png') }}" id="photoUser" class="rounded img-fluid" alt="Foto del usuario">
 					</div>
 					<div class="col-6">
 						<label class="col-form-label">Nombre</label>
-						<p id="nombreUsuario"></p>
+						<p id="nameUser"></p>
 						<label class="col-form-label">Correo</label>
-						<p id="correoUsuario"></p>
-						<label class="col-form-label">Permisos</label>
-						<p id="permisoUsuario"></p>
+						<p id="emailUser"></p>
+						<label class="col-form-label">Estado</label>
+						<p id="stateUser"></p>
 					</div>
 				</div>
 			</div>
@@ -108,11 +108,11 @@
 @section('script')
 <script src="{{ asset('/admins/vendors/lobibox/Lobibox.js') }}"></script>
 <script src="{{ asset('/admins/vendors/datatables/jquery.dataTables.min.js') }}"></script>
-<script src="https://cdn.datatables.net/buttons/1.2.2/js/dataTables.buttons.min.js"></script>
-<script src="https://cdn.datatables.net/buttons/1.2.2/js/buttons.flash.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/2.5.0/jszip.min.js"></script>
-<script src="https://cdn.rawgit.com/bpampuch/pdfmake/0.1.18/build/pdfmake.min.js"></script>
-<script src="https://cdn.rawgit.com/bpampuch/pdfmake/0.1.18/build/vfs_fonts.js"></script>
-<script src="https://cdn.datatables.net/buttons/1.2.2/js/buttons.html5.min.js"></script>
-<script src="https://cdn.datatables.net/buttons/1.2.2/js/buttons.print.min.js"></script>
+<script src="{{ asset('/admins/vendors/datatables/buttons/dataTables.buttons.min.js') }}"></script>
+<script src="{{ asset('/admins/vendors/datatables/buttons/dataTables.flash.min.js') }}"></script>
+<script src="{{ asset('/admins/vendors/datatables/buttons/jszip.min.js') }}"></script>
+<script src="{{ asset('/admins/vendors/datatables/buttons/pdfmake.min.js') }}"></script>
+<script src="{{ asset('/admins/vendors/datatables/buttons/vfs_fonts.js') }}"></script>
+<script src="{{ asset('/admins/vendors/datatables/buttons/buttons.html5.min.js') }}"></script>
+<script src="{{ asset('/admins/vendors/datatables/buttons/buttons.print.min.js') }}"></script>
 @endsection

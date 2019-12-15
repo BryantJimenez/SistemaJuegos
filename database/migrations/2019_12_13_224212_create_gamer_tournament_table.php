@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class CreateTournamentWinnerTable extends Migration
+class CreateGamerTournamentTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,15 +13,16 @@ class CreateTournamentWinnerTable extends Migration
      */
     public function up()
     {
-        Schema::create('tournament_winner', function (Blueprint $table) {
+        Schema::create('gamer_tournament', function (Blueprint $table) {
             $table->bigIncrements('id');
+            $table->bigInteger('gamer_id')->unsigned();
             $table->bigInteger('tournament_id')->unsigned();
-            $table->bigInteger('winner_id')->unsigned();
             $table->timestamps();
 
             #Relations
+            $table->foreign('gamer_id')->references('id')->on('gamers')->onDelete('cascade')->onUpdate('cascade');
             $table->foreign('tournament_id')->references('id')->on('tournaments')->onDelete('cascade')->onUpdate('cascade');
-            $table->foreign('winner_id')->references('id')->on('winners')->onDelete('cascade')->onUpdate('cascade');
+
         });
     }
 
@@ -32,6 +33,6 @@ class CreateTournamentWinnerTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('tournament_winner');
+        Schema::dropIfExists('gamer_tournament');
     }
 }

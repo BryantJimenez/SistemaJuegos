@@ -23,11 +23,15 @@
 					<div class="row">
 						<div class="form-group col-lg-6 col-md-6 col-12">
 							<label class="col-form-label">Nombre<b class="text-danger">*</b></label>
-							<input class="form-control" type="text" name="name" required placeholder="Introduzca un nombre">
+							<input class="form-control" type="text" name="name" required placeholder="Introduzca un nombre" value="{{ old('name') }}">
+						</div>
+						<div class="form-group col-lg-6 col-md-6 col-12">
+							<label class="col-form-label">Apellido<b class="text-danger">*</b></label>
+							<input class="form-control" type="text" name="lastname" required placeholder="Introduzca un apellido" value="{{ old('lastname') }}">
 						</div>
 						<div class="form-group col-lg-6 col-md-6 col-12">
 							<label class="col-form-label">Correo Electrónico<b class="text-danger">*</b></label>
-							<input class="form-control" type="email" name="email" required placeholder="Introduzca un correo electrónico">
+							<input class="form-control" type="email" name="email" required placeholder="Introduzca un correo electrónico" value="{{ old('email') }}">
 						</div>
 						<div class="form-group col-lg-6 col-md-6 col-12">
 							<label class="col-form-label">Contraseña<b class="text-danger">*</b></label>
@@ -36,14 +40,6 @@
 						<div class="form-group col-lg-6 col-md-6 col-12">
 							<label class="col-form-label">Confirmar Contraseña<b class="text-danger">*</b></label>
 							<input class="form-control" type="password" name="password_confirmation" required placeholder="********">
-						</div>
-						<div class="form-group col-lg-6 col-md-6 col-12">
-							<label class="col-form-label">Permisos<b class="text-danger">*</b></label>
-							<select class="custom-select col-12" name="rol" required>
-								<option value="">Seleccione</option>
-								<option value="Admin">Administrador</option>
-								<option value="Usuario">Usuario</option>
-							</select>
 						</div>
 						<div class="form-group col-12">
 							<div class="btn-group" role="group">

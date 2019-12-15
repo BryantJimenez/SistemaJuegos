@@ -40,8 +40,8 @@ class UserController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function store(UserStoreRequest $request) {
-        $count=User::where('name', request('name'))->count();
-        $slug=Str::slug(request('name'), '-');
+        $count=User::where('name', request('name'))->where('lastname', request('name'))->count();
+        $slug=Str::slug(request('name')." ".request('lastname'), '-');
         if ($count>0) {
             $slug=$slug.$count;
         }
@@ -59,9 +59,9 @@ class UserController extends Controller
 
         $user=User::create([
             'name' => request('name'),
+            'lastname' => request('lastname'),
             'slug' => $slug,
             'email' => request('email'),
-            'rol' => request('rol'),
             'password' => Hash::make(request('password')),
         ])->save();
 
@@ -81,9 +81,11 @@ class UserController extends Controller
     public function show($slug) {
         $user=User::where('slug', $slug)->firstOrFail();
         echo json_encode([
-            'nombre' => $user->name,
-            'correo' => $user->email,
-            'permisos' => $user->rol
+            'photo' => $user->photo,
+            'name' => $user->name,
+            'lastname' => $user->lastname,
+            'email' => $user->email,
+            'state' => userState($user->state)
         ]);
         // return view('admin.users.show', compact("user"));
     }

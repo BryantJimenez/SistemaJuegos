@@ -31,16 +31,12 @@
 							<input class="form-control" type="text" name="name" required placeholder="Introduzca un nombre" value="{{ $user->name }}">
 						</div>
 						<div class="form-group col-lg-6 col-md-6 col-12">
-							<label class="col-form-label">Correo Electrónico<b class="text-danger">*</b></label>
-							<input class="form-control" type="email" name="email" required placeholder="Introduzca un correo electrónico" value="{{ $user->email }}">
+							<label class="col-form-label">Apellido<b class="text-danger">*</b></label>
+							<input class="form-control" type="text" name="lastname" required placeholder="Introduzca un apellido" value="{{ $user->lastname }}">
 						</div>
 						<div class="form-group col-lg-6 col-md-6 col-12">
-							<label class="col-form-label">Permisos<b class="text-danger">*</b></label>
-							<select class="custom-select col-12" name="rol" required>
-								<option value="">Seleccione</option>
-								<option value="Admin" @if($user->rol=='Admin') selected @endif>Administrador</option>
-								<option value="Usuario" @if($user->rol=='Usuario') selected @endif>Usuario</option>
-							</select>
+							<label class="col-form-label">Correo Electrónico<b class="text-danger">*</b></label>
+							<input class="form-control" type="email" name="email" required placeholder="Introduzca un correo electrónico" value="{{ $user->email }}">
 						</div>
 						<div class="form-group col-12">
 							<div class="btn-group" role="group">

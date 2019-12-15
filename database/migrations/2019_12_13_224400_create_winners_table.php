@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class CreateGamersTable extends Migration
+class CreateWinnersTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,13 +13,14 @@ class CreateGamersTable extends Migration
      */
     public function up()
     {
-        Schema::create('gamers', function (Blueprint $table) {
+        Schema::create('winners', function (Blueprint $table) {
             $table->bigIncrements('id');
-            $table->string('name');
-            $table->string('lastname');
-            $table->string('photo')->default('usuario.png');
-            $table->string('slug')->unique();
+            $table->bigInteger('couple_id')->unsigned();
+            $table->enum('position', [1, 2]);
             $table->timestamps();
+
+            #Relations
+            $table->foreign('couple_id')->references('id')->on('couples')->onDelete('cascade')->onUpdate('cascade');
         });
     }
 
@@ -30,6 +31,6 @@ class CreateGamersTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('gamers');
+        Schema::dropIfExists('winners');
     }
 }

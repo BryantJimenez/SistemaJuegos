@@ -15,4 +15,8 @@ class Group extends Model
 	public function phase() {
 		return $this->belongsTo(Phase::class);
 	}
+
+	public function couples() {
+        return $this->belongsToMany(Couple::class)->withTimestamps();
+    }
 }

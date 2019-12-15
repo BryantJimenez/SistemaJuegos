@@ -15,4 +15,12 @@ class Couple extends Model
 	public function club() {
 		return $this->belongsTo(Club::class);
 	}
+
+	public function winners() {
+        return $this->hasMany(Winner::class);
+    }
+
+	public function groups() {
+        return $this->belongsToMany(Group::class)->withTimestamps();
+    }
 }
