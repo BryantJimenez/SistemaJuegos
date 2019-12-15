@@ -37,7 +37,7 @@
 								<td>{{ $user->email }}</td>
 								<td>{!! userState($user->state) !!}</td>
 								<td class="d-flex">
-									<button class="btn btn-primary btn-circle btn-sm" onclick="showUser('{{ $user->slug }}')"><i class="fa fa-eye"></i></button>&nbsp;&nbsp;
+									<button class="btn btn-primary btn-circle btn-sm" onclick="showUser('{{ $user->slug }}')"><i class="mdi mdi-account-card-details"></i></button>&nbsp;&nbsp;
 									<a class="btn btn-info btn-circle btn-sm" href="{{ route('usuarios.edit', ['slug' => $user->slug]) }}"><i class="fa fa-edit"></i></a>&nbsp;&nbsp;
 									<button class="btn btn-danger btn-circle btn-sm" onclick="deleteUser('{{ $user->slug }}')"><i class="fa fa-trash"></i></button>
 								</td>

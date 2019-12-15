@@ -27,3 +27,11 @@ Route::get('/usuarios/{slug}/editar', 'UserController@edit')->name('usuarios.edi
 Route::put('/usuarios/{slug}', 'UserController@update')->name('usuarios.update');
 Route::delete('/usuarios/{slug}', 'UserController@destroy')->name('usuarios.destroy');
 // Route::get('/perfil', 'UserController@profile')->name('usuarios.profile');
+// jugadores
+Route::get('/jugadores', 'GamerController@index')->name('jugadores.index');
+Route::get('/jugadores/registrar', 'GamerController@create')->name('jugadores.create');
+Route::post('/jugadores', 'GamerController@store')->name('jugadores.store');
+Route::get('/jugadores/{slug}', 'GamerController@show')->name('jugadores.show');
+Route::get('/jugadores/{slug}/editar', 'GamerController@edit')->name('jugadores.edit');
+Route::put('/jugadores/{slug}', 'GamerController@update')->name('jugadores.update');
+Route::delete('/jugadores/{slug}', 'GamerController@destroy')->name('jugadores.destroy');

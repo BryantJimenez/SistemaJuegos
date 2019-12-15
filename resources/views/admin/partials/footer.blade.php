@@ -1,1 +1,1 @@
-<footer class="footer">Todos los derecho reservados - © activoscp.rubalcavacontadores.com {{ date('Y') }} </footer>
+<footer class="footer">Todos los derecho reservados  - Club de la unión {{ date('Y') }} </footer>

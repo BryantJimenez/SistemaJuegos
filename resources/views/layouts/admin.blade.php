@@ -15,7 +15,7 @@
 	<link href="{{ asset('/admins/vendors/perfect-scrollbar/css/perfect-scrollbar.css') }}" rel="stylesheet">
 	
 	@yield('links')
-	<link href="{{ asset('/admins/css/colors/purple.css') }}" id="theme" rel="stylesheet" type="text/css">
+	<link href="{{ asset('/admins/css/colors/green.css') }}" id="theme" rel="stylesheet" type="text/css">
 </head>
 <body class="fix-header fix-sidebar card-no-border">
 

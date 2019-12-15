@@ -3,12 +3,12 @@
         <div class="navbar-header">
             <a class="navbar-brand" href="{{ route('home') }}">
                 <b>
-                    <img src="{{ asset('/admins/img/caja.png') }}" alt="icono" class="dark-logo" width="70" />
-                    <img src="{{ asset('/admins/img/caja.png') }}" alt="icono" class="light-logo" width="70" />
+                    <img src="{{ asset('/admins/img/logo.png') }}" alt="icono" class="dark-logo" width="50" />
+                    <img src="{{ asset('/admins/img/logo.png') }}" alt="icono" class="light-logo" width="50" />
                 </b>
                 <span>
-                    <img src="{{ asset('/admins/img/activos.png') }}" alt="logo" class="dark-logo" />   
-                    <img src="{{ asset('/admins/img/activos.png') }}" class="light-logo" alt="logo" />
+                    <img src="{{ asset('/admins/img/nombreSistema.png') }}" alt="logo" class="dark-logo" />   
+                    <img src="{{ asset('/admins/img/nombreSistema.png') }}" class="light-logo" alt="logo" />
                 </span>
             </a>
         </div>
@@ -19,15 +19,15 @@
             </ul>
             <ul class="navbar-nav my-lg-0">
                 <li class="nav-item dropdown">
-                    <a class="nav-link dropdown-toggle waves-effect waves-dark" href="" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><img src="{{ asset('/admins/img/users/usuario.png') }}" alt="user" class="profile-pic" /></a>
+                    <a class="nav-link dropdown-toggle waves-effect waves-dark" href="" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><img src="{{ asset('/admins/img/users/'.Auth::user()->photo) }}" alt="user" class="profile-pic" /></a>
                     <div class="dropdown-menu dropdown-menu-right animated flipInY">
                         <ul class="dropdown-user">
                             <li>
                                 <div class="dw-user-box">
-                                    <div class="u-img"><img src="{{ asset('/admins/img/users/usuario.png') }}" alt="user"></div>
+                                    <div class="u-img"><img src="{{ asset('/admins/img/users/'.Auth::user()->photo) }}" alt="user"></div>
                                     <div class="u-text">
-                                        <h4>{{ Auth::user()->name }}</h4>
-                                        <p class="text-muted">{{ Auth::user()->rol }}</p>
+                                        <h4>{{ Auth::user()->name." ".Auth::user()->lastname }}</h4>
+                                        <p class="text-muted">{!! userState(Auth::user()->state) !!}</p>
                                     </div>
                                 </div>
                             </li>

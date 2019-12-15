@@ -2,11 +2,11 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Requests\UserStoreRequest;
+use App\User;
+use Illuminate\Http\Request;
 use Illuminate\Support\Str;
 use Illuminate\Support\Facades\Hash;
-use Illuminate\Http\Request;
-use App\User;
+use App\Http\Requests\UserStoreRequest;
 
 class UserController extends Controller
 {
@@ -40,12 +40,13 @@ class UserController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function store(UserStoreRequest $request) {
-        $count=User::where('name', request('name'))->where('lastname', request('name'))->count();
+        $count=User::where('name', request('name'))->where('lastname', request('lastname'))->count();
         $slug=Str::slug(request('name')." ".request('lastname'), '-');
         if ($count>0) {
             $slug=$slug.$count;
         }
 
+        // Validación para que no se repita el slug
         $num=0;
         while (true) {
             $count2=User::where('slug', $slug)->count();
@@ -53,18 +54,20 @@ class UserController extends Controller
                 $slug=$slug.$num;
                 $num++;
             } else {
+                $data=array('name' => request('name'), 'lastname' => request('lastname'), 'slug' => $slug, 'email' => request('email'), 'password' => Hash::make(request('password')));
                 break;
             }
         }
 
-        $user=User::create([
-            'name' => request('name'),
-            'lastname' => request('lastname'),
-            'slug' => $slug,
-            'email' => request('email'),
-            'password' => Hash::make(request('password')),
-        ])->save();
+        // Mover imagen a carpeta users y extraer nombre
+        if ($request->hasFile('photo')) {
+            $file=$request->file('photo');
+            $photo=time()."_".$file->getClientOriginalName();
+            $file->move(public_path().'/admins/img/users/', $photo);
+            $data['photo']=$photo;
+        }
 
+        $user=User::create($data)->save();
         if ($user) {
             return redirect()->route('usuarios.index')->with(['type' => 'success', 'title' => 'Registro exitoso', 'msg' => 'El usuario ha sido registrado exitosamente.']);
         } else {

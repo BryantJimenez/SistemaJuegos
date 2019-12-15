@@ -65,4 +65,35 @@ $(document).ready(function(){
 			}
 		});
 	});
+
+	$("button[action='gamer']").on("click",function(){
+		$("#formGamer").validate({
+			rules:
+			{
+				name: {
+					required: true,
+					minlength: 2,
+					maxlength: 191
+				},
+
+				lastname: {
+					required: true,
+					minlength: 2,
+					maxlength: 191
+				}
+			},
+			messages:
+			{
+				name: {
+					minlength: 'Escribe mínimo {0} caracteres.',
+					maxlength: 'Escribe máximo {0} caracteres.'
+				},
+
+				lastname: {
+					minlength: 'Escribe mínimo {0} caracteres.',
+					maxlength: 'Escribe máximo {0} caracteres.'
+				}
+			}
+		});
+	});
 });
