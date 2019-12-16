@@ -7,7 +7,7 @@
 @endsection
 
 @section('content')
-
+ 
 <div class="row">
 	<div class="col-12">
 		<div class="card">
@@ -16,7 +16,7 @@
 				@include('admin.partials.errors')
 
 				<h6 class="card-subtitle">Campos obligatorios (<b class="text-danger">*</b>)</h6>
-				<form action="" method="POST" class="form">
+				<form action="{{ route('clubes.store') }}" method="POST" class="form">
 					@csrf
 					<div class="row">
 						<div class="form-group col-lg-6 col-md-6 col-12">
@@ -24,6 +24,12 @@
 							<input class="form-control" type="text" name="name" required placeholder="Introduzca un nombre">
 						</div>
 					</div>
+						<div class="form-group col-12">
+							<div class="btn-group" role="group">
+								<button type="submit" class="btn btn-primary" action="gamer">Guardar</button>
+								<a href="{{ route('clubes.index') }}" class="btn btn-secondary">Volver</a>
+							</div>
+						</div>
 				</form>
 			</div>
 		</div>
