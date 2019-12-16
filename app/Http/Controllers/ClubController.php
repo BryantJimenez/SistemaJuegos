@@ -4,6 +4,8 @@ namespace App\Http\Controllers;
 
 use App\Club;
 use Illuminate\Http\Request;
+use Illuminate\Support\Str;
+use App\Http\Requests\ClubStoreRequest;
 
 class ClubController extends Controller
 {
@@ -14,8 +16,11 @@ class ClubController extends Controller
      */
     public function index()
     {
-        return view('admin.clubs.index');
+        $club=Club::orderBy('id', 'DESC')->get();
+        $num=1;
+        return view('admin.clubs.index', compact('club', 'num'));
     }
+
 
     /**
      * Show the form for creating a new resource.
@@ -35,7 +40,32 @@ class ClubController extends Controller
      */
     public function store(Request $request)
     {
-        //
+         $count=Club::where('name', request('name'))->count();
+        $slug=Str::slug(request('name'), '-');
+        if ($count>0) {
+            $slug=$slug.$count;
+        }
+
+        // Validación para que no se repita el slug
+        $num=0;
+        while (true) {
+            $count2=Club::where('slug', $slug)->count();
+            if ($count2>0) {
+                $slug=$slug.$num;
+                $num++;
+            } else {
+                $data=array('name' => request('name'), 'slug' => $slug );
+                break;
+            }
+        }
+
+
+        $club=Club::create($data)->save();
+        if ($club) {
+            return redirect()->route('clubes.index')->with(['type' => 'success', 'title' => 'Registro exitoso', 'msg' => 'El club ha sido registrado exitosamente.']);
+        } else {
+            return redirect()->route('clubes.index')->with(['type' => 'error', 'title' => 'Registro fallido', 'msg' => 'Ha ocurrido un error durante el proceso, intentelo nuevamente.']);
+        }
     }
 
     /**
@@ -44,9 +74,13 @@ class ClubController extends Controller
      * @param  \App\Club  $club
      * @return \Illuminate\Http\Response
      */
-    public function show(Club $club)
+    public function show($slug)
     {
-        //
+        $club=Club::where('slug', $slug)->firstOrFail();
+        echo json_encode([
+            'name' => $club->name,
+            'state' => userState($club->state)
+        ]);
     }
 
     /**
@@ -55,9 +89,10 @@ class ClubController extends Controller
      * @param  \App\Club  $club
      * @return \Illuminate\Http\Response
      */
-    public function edit(Club $club)
+    public function edit($slug)
     {
-         return view('admin.clubs.edit');
+        $club=Club::where('slug', $slug)->firstOrFail();
+        return view('admin.clubs.edit', compact("club"));
     }
 
     /**
@@ -67,9 +102,16 @@ class ClubController extends Controller
      * @param  \App\Club  $club
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Club $club)
+    public function update(Request $request, $slug)
     {
-        //
+        $club=Club::where('slug', $slug)->firstOrFail();
+        $club->fill($request->all())->save();
+
+        if ($club) {
+            return redirect()->route('clubes.edit', ['slug' => $slug])->with(['type' => 'success', 'title' => 'Edición exitosa', 'msg' => 'El club ha sido editado exitosamente.']);
+        } else {
+            return redirect()->route('clubes.edit', ['slug' => $slug])->with(['type' => 'error', 'title' => 'Edición fallida', 'msg' => 'Ha ocurrido un error durante el proceso, intentelo nuevamente.']);
+        }
     }
 
     /**
@@ -78,8 +120,15 @@ class ClubController extends Controller
      * @param  \App\Club  $club
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Club $club)
+    public function destroy($slug)
     {
-        //
+        $club=Club::where('slug', $slug)->firstOrFail();
+        $club->delete();
+
+        if ($club) {
+            return redirect()->route('clubes.index')->with(['type' => 'success', 'title' => 'Eliminación exitosa', 'msg' => 'El club ha sido eliminado exitosamente.']);
+        } else {
+            return redirect()->route('clubes.index')->with(['type' => 'error', 'title' => 'Eliminación fallida', 'msg' => 'Ha ocurrido un error durante el proceso, intentelo nuevamente.']);
+        }
     }
 }

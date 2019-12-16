@@ -24,23 +24,21 @@
 							<tr>
 								<th>#</th>
 								<th>Nombre del Club</th>
-								<th>Grupos Asignados</th>
-								<th>Estado</th>
 								<th>Acciones</th>
 							</tr>
 						</thead>
 						<tbody>
+							@foreach($club as $c)
 							<tr>
-								<td></td>
-								<td></td>
-								<td></td>
-								<td></td>
+								<td>{{ $num }}</td>
+								<td>{{ $c->name }}</td>
 								<td class="d-flex">
-									<button class="btn btn-primary btn-circle btn-sm"><i class="fa fa-eye"></i></button>&nbsp;&nbsp;
-									<a class="btn btn-info btn-circle btn-sm"><i class="fa fa-edit"></i></a>&nbsp;&nbsp;
-									<button class="btn btn-danger btn-circle btn-sm"><i class="fa fa-trash"></i></button>
+									<a class="btn btn-primary btn-circle btn-sm" onclick="showClub( '{{  $c->slug }}' )"><i class="mdi mdi-account-card-details"></i></a>&nbsp;&nbsp;
+									<a class="btn btn-info btn-circle btn-sm" href="{{ route('clubes.edit', ['slug' => $c->slug]) }}"><i class="fa fa-edit"></i></a>&nbsp;&nbsp;
+									<button class="btn btn-danger btn-circle btn-sm" onclick="deleteClub('{{ $c->slug }}')"><i class="fa fa-trash"></i></button>
 								</td>
 							</tr>
+							@endforeach
 						</tbody>
 					</table>
 				</div>
@@ -49,32 +47,46 @@
 	</div>
 </div>
 
-<div class="modal fade" id="showGroup" tabindex="-1" role="dialog" aria-hidden="true">
+<div class="modal fade" id="showClub" tabindex="-1" role="dialog" aria-hidden="true">
 	<div class="modal-dialog" role="document">
 		<div class="modal-content">
 			<div class="modal-header">
-				<h5 class="modal-title">Información del Grupo</h5>
+				<h5 class="modal-title">Información del Club</h5>
 				<button type="button" class="close" data-dismiss="modal" aria-label="Close">
 					<span aria-hidden="true">&times;</span>
 				</button>
 			</div>
 			<div class="modal-body">
 				<div class="row">
-					<div class="col-6">
-						<img class="rounded img-fluid" alt="Foto del usuario">
-					</div>
-					<div class="col-6">
-						<label class="col-form-label">Nombre de la Pareja </label>
-						<p id="nameUser"></p>
-						<label class="col-form-label">Jugador 1</label>
-						<p id="emailUser"></p>
-						<label class="col-form-label">Jugador 2</label>
-						<p id="stateUser"></p>
+					<div class="col-12">
+						<label class="col-form-label">Nombre del Club </label>
+						<p id="nameClub"></p>
 					</div>
 				</div>
 			</div>
 			<div class="modal-footer">
 				<button type="button" class="btn btn-danger" data-dismiss="modal">Cerrar</button>
+			</div>
+		</div>
+	</div>
+</div>
+
+<div class="modal fade" id="deleteClub" tabindex="-1" role="dialog" aria-hidden="true">
+	<div class="modal-dialog" role="document">
+		<div class="modal-content">
+			<div class="modal-header">
+				<h5 class="modal-title">¿Estás seguro de que quieres eliminar este club?</h5>
+				<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+					<span aria-hidden="true">&times;</span>
+				</button>
+			</div>
+			<div class="modal-footer">
+				<form action="#" method="POST" id="formDeleteClub">
+					@csrf
+					@method('DELETE')
+					<button type="submit" class="btn btn-primary">Eliminar</button>
+				</form>
+				<button type="button" class="btn btn-danger" data-dismiss="modal">Cancelar</button>
 			</div>
 		</div>
 	</div>
