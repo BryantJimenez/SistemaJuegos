@@ -30,8 +30,8 @@
                 </li>
                 <li> <a class="has-arrow waves-effect waves-dark" href="#" aria-expanded="false"><i class="fa fa-trophy"></i><span class="hide-menu">Torneos</span></a>
                     <ul aria-expanded="false" class="collapse">
-                        <li><a href="#">Registrar</a></li>
-                        <li><a href="#">Lista</a></li>
+                        <li><a href="{{ route('torneos.create') }}">Registrar</a></li>
+                        <li><a href="{{ route('torneos.index') }}">Lista</a></li>
                     </ul>
                 </li>
                 <li> <a class="has-arrow waves-effect waves-dark" href="#" aria-expanded="false"><i class="mdi mdi-cards-playing-outline"></i><span class="hide-menu">Juegos</span></a>
