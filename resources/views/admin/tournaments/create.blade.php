@@ -43,9 +43,7 @@
 						</div>
 						<div class="form-group col-lg-6 col-md-6 col-12">
 							<label class="col-form-label">Fecha de Inicio<b class="text-danger">*</b></label>
-
-							<input class="form-control date" type="date" name="start" required  >
-
+							<input class="form-control date" type="text" name="start" required placeholder="Seleccione una fecha" value="{{ old('start') }}">
 						</div>
 						<input type="hidden" name="state" value="1">
 						<div class="form-group col-12">
