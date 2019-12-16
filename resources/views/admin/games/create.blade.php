@@ -4,7 +4,7 @@
 @section('page-title', 'Registro de Juego')
 
 @section('links')
-<link rel="stylesheet" href="{{ asset('/admins/vendors/dropify/css/dropify.min.css') }}">
+<link rel="stylesheet" href="{{ asset('/admins/vendors/multiselect/bootstrap.multiselect.css') }}">
 @endsection
 
 @section('breadcrumb')
@@ -30,13 +30,15 @@
 							<select class="form-control" name="type" required>
 								<option value="">Seleccione</option>
 								<option value="1">Slam</option>
-								<option value="2">Torneo</option>
+								{{-- <option value="2">Torneo</option> --}}
 							</select>
 						</div>
 						<div class="form-group col-lg-6 col-md-6 col-12">
 							<label class="col-form-label">Jugadores (Seleccione 4)<b class="text-danger">*</b></label>
-							<select class="form-control multiselect" name="gamers" required multiple>
-								
+							<select class="form-control multiselectGamers" name="gamers" required multiple>
+								@foreach($gamers as $gamer)
+								<option value="{{ $gamer->slug }}">{{ $gamer->name." ".$gamer->lastname }}</option>
+								@endforeach
 							</select>
 						</div>
 						<div class="form-group col-lg-6 col-md-6 col-12">
@@ -45,24 +47,21 @@
 								<option value="">Seleccione</option>
 								<option value="1">Pendiente</option>
 								<option value="2">En Progreso</option>
-								<option value="2">Finalizada</option>
+								<option value="3">Finalizada</option>
 							</select>
 						</div>
 						<div class="form-group col-lg-6 col-md-6 col-12">
-							<label class="col-form-label">Apellido<b class="text-danger">*</b></label>
-							<input class="form-control" type="text" name="lastname" required placeholder="Introduzca un apellido" value="{{ old('lastname') }}">
+							<label class="col-form-label">Fecha<b class="text-danger">*</b></label>
+							
 						</div>
 						<div class="form-group col-lg-6 col-md-6 col-12">
-							<label class="col-form-label">Correo Electrónico<b class="text-danger">*</b></label>
-							<input class="form-control" type="email" name="email" required placeholder="Introduzca un correo electrónico" value="{{ old('email') }}">
-						</div>
-						<div class="form-group col-lg-6 col-md-6 col-12">
-							<label class="col-form-label">Contraseña<b class="text-danger">*</b></label>
-							<input class="form-control" type="password" name="password" required placeholder="********" id="password">
-						</div>
-						<div class="form-group col-lg-6 col-md-6 col-12">
-							<label class="col-form-label">Confirmar Contraseña<b class="text-danger">*</b></label>
-							<input class="form-control" type="password" name="password_confirmation" required placeholder="********">
+							<label class="col-form-label">Estado<b class="text-danger">*</b></label>
+							<select class="form-control" name="state" required>
+								<option value="">Seleccione</option>
+								<option value="1">Pendiente</option>
+								<option value="2">En Progreso</option>
+								<option value="3">Finalizada</option>
+							</select>
 						</div>
 						<div class="form-group col-12">
 							<div class="btn-group" role="group">
@@ -80,7 +79,7 @@
 @endsection
 
 @section('script')
-<script src="{{ asset('/admins/vendors/dropify/js/dropify.min.js') }}"></script>
+<script src="{{ asset('/admins/vendors/multiselect/bootstrap-multiselect.js') }}"></script>
 <script src="{{ asset('/admins/vendors/validate/jquery.validate.js') }}"></script>
 <script src="{{ asset('/admins/vendors/validate/additional-methods.js') }}"></script>
 <script src="{{ asset('/admins/vendors/validate/messages_es.js') }}"></script>
