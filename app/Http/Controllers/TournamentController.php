@@ -45,6 +45,8 @@ class TournamentController extends Controller
             $slug=$slug.$count;
         }
 
+        $start = date('Y-m-d', strtotime(request('start')));
+
         // Validación para que no se repita el slug
         $num=0;
         while (true) {
@@ -53,7 +55,7 @@ class TournamentController extends Controller
                 $slug=$slug.$num;
                 $num++;
             } else {
-                $data=array('name' => request('name'), 'slug' => $slug, 'groups' => request('groups'), 'type' => request('type'), 'state' => request('state'), 'start' => request('start') );
+                $data=array('name' => request('name'), 'slug' => $slug, 'groups' => request('groups'), 'type' => request('type'), 'state' => request('state'), 'start' => $start );
                 break;
             }
         }
