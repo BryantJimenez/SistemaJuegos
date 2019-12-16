@@ -4,6 +4,7 @@
 @section('page-title', 'Lista de Torneos')
 
 @section('links')
+<link rel="stylesheet" href="{{ asset('/admins/vendors/multiselect/bootstrap.multiselect.css') }}">
 <link rel="stylesheet" href="{{ asset('/admins/vendors/lobibox/Lobibox.min.css') }}">
 @endsection
 
@@ -31,17 +32,22 @@
 							</tr>
 						</thead>
 						<tbody>
-							@foreach($tournament as $t)
+							@foreach($tournaments as $tournament)
 							<tr>
 								<td>{{ $num++ }}</td>
-								<td>{{ $t->name }}</td>
-								<td>{{ date('d-m-Y', strtotime($t->start)) }}</td>
-								<td>{{ $t->type }}</td>
-								<td>{!! userState($t->state) !!}</td>
+								<td>{{ $tournament->name }}</td>
+								<td>{{ date('d-m-Y', strtotime($tournament->start)) }}</td>
+								<td>{{ $tournament->type }}</td>
+								<td>{!! tournamentState($tournament->state) !!}</td>
 								<td class="d-flex">
-									<a class="btn btn-primary btn-circle btn-sm" onclick="showTournament('{{  $t->slug }}')"><i class="mdi mdi-account-card-details"></i></a>&nbsp;&nbsp;
-									<a class="btn btn-info btn-circle btn-sm" href="{{ route('torneos.edit', ['slug' => $t->slug]) }}"><i class="fa fa-edit"></i></a>&nbsp;&nbsp;
-									<button class="btn btn-danger btn-circle btn-sm" onclick="deleteTournament('{{ $t->slug }}')"><i class="fa fa-trash"></i></button>
+									@if($tournament->type=="Normal")
+									<button class="btn btn-success btn-circle btn-sm" onclick="addGamers('{{ $tournament->slug }}')"><i class="fa fa-user"></i></button>&nbsp;&nbsp;
+									@else
+									<button class="btn btn-success btn-circle btn-sm" onclick="addCouples('{{ $tournament->slug }}')"><i class="mdi mdi-account-multiple"></i></button>&nbsp;&nbsp;
+									@endif
+									<a class="btn btn-primary btn-circle btn-sm" href="{{ route('torneos.show', ['slug' => $tournament->slug]) }}"><i class="fa fa-trophy"></i></a>&nbsp;&nbsp;
+									<a class="btn btn-info btn-circle btn-sm" href="{{ route('torneos.edit', ['slug' => $tournament->slug]) }}"><i class="fa fa-edit"></i></a>&nbsp;&nbsp;
+									<button class="btn btn-danger btn-circle btn-sm" onclick="deleteTournament('{{ $tournament->slug }}')"><i class="fa fa-trash"></i></button>
 								</td>
 							</tr>
 							@endforeach
@@ -52,30 +58,67 @@
 		</div>
 	</div>
 </div>
-  
-<div class="modal fade" id="showTournament" tabindex="-1" role="dialog" aria-hidden="true">
+
+<div class="modal fade" id="addGamers" tabindex="-1" role="dialog" aria-hidden="true">
 	<div class="modal-dialog" role="document">
 		<div class="modal-content">
 			<div class="modal-header">
-				<h5 class="modal-title">Información del Torneo</h5>
+				<h5 class="modal-title">Seleccione a los jugadores que participaran en el torneo</h5>
 				<button type="button" class="close" data-dismiss="modal" aria-label="Close">
 					<span aria-hidden="true">&times;</span>
 				</button>
 			</div>
 			<div class="modal-body">
-				<div class="row">
-					<div class="col-6">
-						<label class="col-form-label">Nombre</label>
-						<p id="nameTournament"></p>
-						<label class="col-form-label">Número de Grupos</label>
-						<p id="groupsTournament"></p>
-						<label class="col-form-label">Estado</label>
-						<p id="stateTournament"></p>
+				<form action="#" method="POST" id="formAddGamers">
+					@csrf
+					<div class="form-group col-lg-12 col-md-12 col-12">
+						<label class="col-form-label">Jugadores<b class="text-danger">*</b></label>
+						<select class="form-control multiselectGamers" name="gamers[]" required multiple>
+						</select>
 					</div>
-				</div>
+					<div class="form-group col-12 text-right">
+						<button type="submit" class="btn btn-primary">Guardar</button>
+						<button type="button" class="btn btn-danger" data-dismiss="modal">Cancelar</button>
+					</div>
+				</form>
+				<p class="h3 text-danger text-center" id="formAddGamersFull">Este torneo esta lleno</p>
 			</div>
-			<div class="modal-footer">
-				<button type="button" class="btn btn-danger" data-dismiss="modal">Cerrar</button>
+		</div>
+	</div>
+</div>
+
+<div class="modal fade" id="addCouples" tabindex="-1" role="dialog" aria-hidden="true">
+	<div class="modal-dialog" role="document">
+		<div class="modal-content">
+			<div class="modal-header">
+				<h5 class="modal-title">Seleccione a los jugadores que conformaran la pareja</h5>
+				<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+					<span aria-hidden="true">&times;</span>
+				</button>
+			</div>
+			<div class="modal-body">
+				<form action="#" method="POST" id="formAddCouples">
+					@csrf
+					<div class="form-group col-lg-12 col-md-12 col-12">
+						<label class="col-form-label">Jugadores (2 máximo)<b class="text-danger">*</b></label>
+						<select class="form-control multiselectCouples" name="gamers[]" required multiple>
+						</select>
+					</div>
+					<div class="form-group col-lg-12 col-md-12 col-12">
+						<label class="col-form-label">Club<b class="text-danger">*</b></label>
+						<select class="form-control" name="club" required>
+							<option value="">Seleccione</option>
+							@foreach ($clubs as $club)
+							<option value="{{ $club->slug }}">{{ $club->name }}</option>
+							@endforeach
+						</select>
+					</div>
+					<div class="form-group col-12 text-right">
+						<button type="submit" class="btn btn-primary">Guardar</button>
+						<button type="button" class="btn btn-danger" data-dismiss="modal">Cancelar</button>
+					</div>
+				</form>
+				<p class="h3 text-danger text-center" id="formAddCouplesFull">Este torneo esta lleno</p>
 			</div>
 		</div>
 	</div>
@@ -107,6 +150,7 @@
 @endsection
 
 @section('script')
+<script src="{{ asset('/admins/vendors/multiselect/bootstrap-multiselect.js') }}"></script>
 <script src="{{ asset('/admins/vendors/lobibox/Lobibox.js') }}"></script>
 <script src="{{ asset('/admins/vendors/datatables/jquery.dataTables.min.js') }}"></script>
 <script src="{{ asset('/admins/vendors/datatables/buttons/dataTables.buttons.min.js') }}"></script>

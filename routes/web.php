@@ -46,6 +46,8 @@ Route::get('/torneos/{slug}', 'TournamentController@show')->name('torneos.show')
 Route::get('/torneos/{slug}/editar', 'TournamentController@edit')->name('torneos.edit');
 Route::put('/torneos/{slug}', 'TournamentController@update')->name('torneos.update');
 Route::delete('/torneos/{slug}', 'TournamentController@destroy')->name('torneos.destroy');
+Route::get('/torneos/{slug}/agregar', 'TournamentController@addGamers')->name('torneos.add.gamers');
+Route::post('/torneos/{slug}/agregar', 'TournamentController@addGamersStore')->name('torneos.store.gamers');
 
 //Clubes
 Route::get('/clubes', 'ClubController@index')->name('clubes.index');
@@ -64,3 +66,7 @@ Route::get('/juegos/{slug}', 'GameController@show')->name('juegos.show');
 Route::get('/juegos/{slug}/editar', 'GameController@edit')->name('juegos.edit');
 Route::put('/juegos/{slug}', 'GameController@update')->name('juegos.update');
 Route::delete('/juegos/{slug}', 'GameController@destroy')->name('juegos.destroy');
+
+// Parejas
+Route::get('/parejas/{slug}/agregar', 'CouplesController@addCouples')->name('parejas.add.couples');
+Route::post('/parejas/{slug}/agregar', 'CouplesController@addCouplesStore')->name('parejas.store.couples');

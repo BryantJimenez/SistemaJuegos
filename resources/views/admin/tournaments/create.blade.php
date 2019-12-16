@@ -10,6 +10,7 @@
 
 @section('links')
 <link rel="stylesheet" href="{{ asset('/admins/vendors/datepicker/bootstrap-material-datetimepicker/css/bootstrap-material-datetimepicker.css') }}">
+<link rel="stylesheet" href="{{ asset('/admins/vendors/touchspin/jquery.bootstrap-touchspin.min.css') }}">
 @endsection
 
 @section('content')
@@ -26,20 +27,20 @@
 					@csrf
 					<div class="row">
 						<div class="form-group col-lg-6 col-md-6 col-12">
-							<label class="col-form-label">Nombre Torneo<b class="text-danger">*</b></label>
+							<label class="col-form-label">Nombre del Torneo<b class="text-danger">*</b></label>
 							<input class="form-control" type="text" name="name" required placeholder="Introduzca un nombre" value="{{ old('name') }}">
 						</div>
 						<div class="form-group col-lg-6 col-md-6 col-12">
 							<label class="col-form-label">Máximo de Grupos<b class="text-danger">*</b></label>
-							<input class="form-control" type="number" name="groups" required placeholder="Introduzca el número máximo de equipos">
+							<input class="form-control numberTournament" type="text" name="groups" required placeholder="Introduzca el número máximo de grupos" value="{{ old('groups') }}">
 						</div>
 						<div class="form-group col-lg-6 col-md-6 col-12">
 							<label class="col-form-label">Tipo<b class="text-danger">*</b></label>
-							<select class="form-control" type="text" name="type" required placeholder="Introduzca un nombre">
+							<select class="form-control" name="type" required>
 								<option value="">Seleccione</option>
-								<option value="Normal">Normal</option>
-								<option value="Club">Club</option>
-							</select>	
+								<option value="Normal" @if(old('type')=="Normal") selected @endif>Normal</option>
+								<option value="Club" @if(old('type')=="Club") selected @endif>Club</option>
+							</select>
 						</div>
 						<div class="form-group col-lg-6 col-md-6 col-12">
 							<label class="col-form-label">Fecha de Inicio<b class="text-danger">*</b></label>
@@ -63,6 +64,7 @@
 @endsection
 
 @section('script')
+<script src="{{ asset('/admins/vendors/touchspin/jquery.bootstrap-touchspin.min.js') }}"></script>
 <script src="{{ asset('/admins/vendors/validate/jquery.validate.js') }}"></script>
 <script src="{{ asset('/admins/vendors/validate/additional-methods.js') }}"></script>
 <script src="{{ asset('/admins/vendors/validate/messages_es.js') }}"></script>

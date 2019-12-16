@@ -90,7 +90,6 @@ class UserController extends Controller
             'email' => $user->email,
             'state' => userState($user->state)
         ]);
-        // return view('admin.users.show', compact("user"));
     }
 
     /**

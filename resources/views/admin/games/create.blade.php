@@ -3,13 +3,14 @@
 @section('title', 'Registro de Juego')
 @section('page-title', 'Registro de Juego')
 
-@section('links')
-<link rel="stylesheet" href="{{ asset('/admins/vendors/multiselect/bootstrap.multiselect.css') }}">
-@endsection
-
 @section('breadcrumb')
 <li class="breadcrumb-item"><a href="{{ route('juegos.index') }}">Juegos</a></li>
 <li class="breadcrumb-item active">Registro</li>
+@endsection
+
+@section('links')
+<link rel="stylesheet" href="{{ asset('/admins/vendors/multiselect/bootstrap.multiselect.css') }}">
+<link rel="stylesheet" href="{{ asset('/admins/vendors/touchspin/jquery.bootstrap-touchspin.min.css') }}">
 @endsection
 
 @section('content')
@@ -22,46 +23,36 @@
 				@include('admin.partials.errors')
 
 				<h6 class="card-subtitle">Campos obligatorios (<b class="text-danger">*</b>)</h6>
-				<form action="{{ route('juegos.store') }}" method="POST" class="form" id="formGame" enctype="multipart/form-data">
+				<form action="{{ route('juegos.store') }}" method="POST" class="form" id="formGame">
 					@csrf
 					<div class="row">
-						<div class="form-group col-lg-6 col-md-6 col-12">
-							<label class="col-form-label">Tipo<b class="text-danger">*</b></label>
-							<select class="form-control" name="type" required>
-								<option value="">Seleccione</option>
-								<option value="1">Slam</option>
-								{{-- <option value="2">Torneo</option> --}}
-							</select>
+						<div class="form-group col-12">
+							<label class="col-form-label">Tipo</label>
+							<input class="form-control" type="text" readonly value="Slam">
 						</div>
 						<div class="form-group col-lg-6 col-md-6 col-12">
-							<label class="col-form-label">Jugadores (Seleccione 4)<b class="text-danger">*</b></label>
-							<select class="form-control multiselectGamers" name="gamers" required multiple>
+							<label class="col-form-label">Pareja 1 (2 máximo)<b class="text-danger">*</b></label>
+							<select class="form-control multiselectCouples" name="couple1[]" required multiple>
 								@foreach($gamers as $gamer)
 								<option value="{{ $gamer->slug }}">{{ $gamer->name." ".$gamer->lastname }}</option>
 								@endforeach
 							</select>
 						</div>
 						<div class="form-group col-lg-6 col-md-6 col-12">
-							<label class="col-form-label">Estado<b class="text-danger">*</b></label>
-							<select class="form-control" name="state" required>
-								<option value="">Seleccione</option>
-								<option value="1">Pendiente</option>
-								<option value="2">En Progreso</option>
-								<option value="3">Finalizada</option>
+							<label class="col-form-label">Pareja 2 (2 máximo)<b class="text-danger">*</b></label>
+							<select class="form-control multiselectCouples2" name="couple2[]" required multiple>
+								@foreach($gamers as $gamer)
+								<option value="{{ $gamer->slug }}">{{ $gamer->name." ".$gamer->lastname }}</option>
+								@endforeach
 							</select>
 						</div>
 						<div class="form-group col-lg-6 col-md-6 col-12">
-							<label class="col-form-label">Fecha<b class="text-danger">*</b></label>
-							
+							<label class="col-form-label">Puntaje de la Pareja 1<b class="text-danger">*</b></label>
+							<input class="form-control numberPoint" type="text" name="points1" required placeholder="Introduzca el puntaje" value="0">
 						</div>
 						<div class="form-group col-lg-6 col-md-6 col-12">
-							<label class="col-form-label">Estado<b class="text-danger">*</b></label>
-							<select class="form-control" name="state" required>
-								<option value="">Seleccione</option>
-								<option value="1">Pendiente</option>
-								<option value="2">En Progreso</option>
-								<option value="3">Finalizada</option>
-							</select>
+							<label class="col-form-label">Puntaje de la Pareja 2<b class="text-danger">*</b></label>
+							<input class="form-control numberPoint" type="text" name="points2" required placeholder="Introduzca el puntaje" value="0">
 						</div>
 						<div class="form-group col-12">
 							<div class="btn-group" role="group">
@@ -80,6 +71,7 @@
 
 @section('script')
 <script src="{{ asset('/admins/vendors/multiselect/bootstrap-multiselect.js') }}"></script>
+<script src="{{ asset('/admins/vendors/touchspin/jquery.bootstrap-touchspin.min.js') }}"></script>
 <script src="{{ asset('/admins/vendors/validate/jquery.validate.js') }}"></script>
 <script src="{{ asset('/admins/vendors/validate/additional-methods.js') }}"></script>
 <script src="{{ asset('/admins/vendors/validate/messages_es.js') }}"></script>

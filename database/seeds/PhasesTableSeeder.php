@@ -12,9 +12,13 @@ class PhasesTableSeeder extends Seeder
     public function run()
     {
     	App\Phase::create(
-    		['name' => 'Fase de Grupos', 'slug' => 'fase-de-grupos'],
-    		['name' => 'Semifinal', 'slug' => 'semifinal'],
-    		['name' => 'Final', 'slug' => 'final']
+    		['name' => 'Fase de Grupos', 'slug' => 'fase-de-grupos']
     	);
+        App\Phase::create(
+            ['name' => 'Semifinal', 'slug' => 'semifinal']
+        );
+        App\Phase::create(
+            ['name' => 'Final', 'slug' => 'final']
+        );
     }
 }

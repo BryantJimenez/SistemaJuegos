@@ -15,12 +15,9 @@ class CreateWinnersTable extends Migration
     {
         Schema::create('winners', function (Blueprint $table) {
             $table->bigIncrements('id');
-            $table->bigInteger('couple_id')->unsigned();
-            $table->enum('position', [1, 2]);
+            $table->enum('type', [1, 2])->default(1);
+            $table->enum('position', [1, 2])->default(1);
             $table->timestamps();
-
-            #Relations
-            $table->foreign('couple_id')->references('id')->on('couples')->onDelete('cascade')->onUpdate('cascade');
         });
     }
 
