@@ -8,6 +8,10 @@
 <li class="breadcrumb-item active">Editar</li>
 @endsection
 
+@section('links')
+<link rel="stylesheet" href="{{ asset('/admins/vendors/datepicker/bootstrap-material-datetimepicker/css/bootstrap-material-datetimepicker.css') }}">
+@endsection
+
 @section('content')
 
 <div class="row">
@@ -29,6 +33,10 @@
 						<div class="form-group col-lg-6 col-md-6 col-12">
 							<label class="col-form-label">Máximo de Grupos<b class="text-danger">*</b></label>
 							<input class="form-control" type="number" name="groups" required placeholder="Introduzca el número máximo de equipos" value="{{ $tournament->groups }}">
+						</div>
+						<div class="form-group col-lg-6 col-md-6 col-12">
+							<label class="col-form-label">Fecha de Inicio<b class="text-danger">*</b></label>
+							<input class="form-control date" type="date" name="start" required placeholder="Introduzca un nombre" value="{{ $tournament->start }}">
 						</div>
 						<div class="form-group col-lg-6 col-md-6 col-12">
 							<label class="col-form-label">Tipo<b class="text-danger">*</b></label>
@@ -59,4 +67,6 @@
 <script src="{{ asset('/admins/vendors/validate/additional-methods.js') }}"></script>
 <script src="{{ asset('/admins/vendors/validate/messages_es.js') }}"></script>
 <script src="{{ asset('/admins/js/validate.js') }}"></script>
+<script src="{{ asset('/admins/vendors/moment/moment.js') }}"></script>
+<script src="{{ asset('/admins/vendors/datepicker/bootstrap-material-datetimepicker/js/bootstrap-material-datetimepicker.js') }}"></script>
 @endsection

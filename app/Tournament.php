@@ -6,7 +6,7 @@ use Illuminate\Database\Eloquent\Model;
 
 class Tournament extends Model
 {
-    protected $fillable = [ 'name', 'slug', 'groups', 'type', 'state'];
+    protected $fillable = [ 'name', 'slug', 'groups', 'start' , 'type', 'state'];
 
     public function gamers() {
         return $this->belongsToMany(Gamer::class)->withTimestamps();

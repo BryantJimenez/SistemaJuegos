@@ -53,7 +53,7 @@ class TournamentController extends Controller
                 $slug=$slug.$num;
                 $num++;
             } else {
-                $data=array('name' => request('name'), 'slug' => $slug, 'groups' => request('groups'), 'type' => request('type'), 'state' => request('state') );
+                $data=array('name' => request('name'), 'slug' => $slug, 'groups' => request('groups'), 'type' => request('type'), 'state' => request('state'), 'start' => request('start') );
                 break;
             }
         }
@@ -79,6 +79,7 @@ class TournamentController extends Controller
         echo json_encode([
             'name' => $tournament->name,
             'groups' => $tournament->groups,
+            'start' => $tournament->start,
             'type' => $tournament->type,
             'state' => userState($tournament->state)
         ]);

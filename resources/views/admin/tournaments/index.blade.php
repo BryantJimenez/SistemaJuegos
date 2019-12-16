@@ -25,6 +25,7 @@
 								<th>#</th>
 								<th>Nombre del Torneo</th>
 								<th>Tipo</th>
+								<th>Fecha</th>
 								<th>Estado</th>
 								<th>Acciones</th>
 							</tr>
@@ -34,6 +35,7 @@
 							<tr>
 								<td>{{ $num++ }}</td>
 								<td>{{ $t->name }}</td>
+								<td>{{ strtotime($t->start) }}</td>
 								<td>{{ $t->type }}</td>
 								<td>{!! userState($t->state) !!}</td>
 								<td class="d-flex">

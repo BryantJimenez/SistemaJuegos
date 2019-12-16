@@ -8,6 +8,10 @@
 <li class="breadcrumb-item active">Registro</li>
 @endsection
 
+@section('links')
+<link rel="stylesheet" href="{{ asset('/admins/vendors/datepicker/bootstrap-material-datetimepicker/css/bootstrap-material-datetimepicker.css') }}">
+@endsection
+
 @section('content')
 
 <div class="row">
@@ -37,6 +41,10 @@
 								<option value="Club">Club</option>
 							</select>	
 						</div>
+						<div class="form-group col-lg-6 col-md-6 col-12">
+							<label class="col-form-label">Fecha de Inicio<b class="text-danger">*</b></label>
+							<input class="form-control date" type="text" name="start" required placeholder="Seleccione una fecha" value="{{ old('start') }}">
+						</div>
 						<input type="hidden" name="state" value="1">
 						<div class="form-group col-12">
 							<div class="btn-group" role="group">
@@ -59,4 +67,6 @@
 <script src="{{ asset('/admins/vendors/validate/additional-methods.js') }}"></script>
 <script src="{{ asset('/admins/vendors/validate/messages_es.js') }}"></script>
 <script src="{{ asset('/admins/js/validate.js') }}"></script>
+<script src="{{ asset('/admins/vendors/moment/moment.js') }}"></script>
+<script src="{{ asset('/admins/vendors/datepicker/bootstrap-material-datetimepicker/js/bootstrap-material-datetimepicker.js') }}"></script>
 @endsection
