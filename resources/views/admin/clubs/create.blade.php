@@ -7,7 +7,7 @@
 @endsection
 
 @section('content')
- 
+
 <div class="row">
 	<div class="col-12">
 		<div class="card">
@@ -23,13 +23,13 @@
 							<label class="col-form-label">Nombre<b class="text-danger">*</b></label>
 							<input class="form-control" type="text" name="name" required placeholder="Introduzca un nombre">
 						</div>
-					</div>
 						<div class="form-group col-12">
 							<div class="btn-group" role="group">
 								<button type="submit" class="btn btn-primary" action="gamer">Guardar</button>
 								<a href="{{ route('clubes.index') }}" class="btn btn-secondary">Volver</a>
 							</div>
 						</div>
+					</div>
 				</form>
 			</div>
 		</div>
