@@ -17,7 +17,7 @@ class CreateCouplesTable extends Migration
             $table->bigIncrements('id');
             $table->bigInteger('player1_id')->unsigned();
             $table->bigInteger('player2_id')->unsigned();
-            $table->bigInteger('club_id')->unsigned();
+            $table->bigInteger('club_id')->unsigned()->nullable();
             $table->timestamps();
 
             #Relations

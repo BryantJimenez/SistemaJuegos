@@ -36,8 +36,8 @@
                 </li>
                 <li> <a class="has-arrow waves-effect waves-dark" href="#" aria-expanded="false"><i class="mdi mdi-cards-playing-outline"></i><span class="hide-menu">Juegos</span></a>
                     <ul aria-expanded="false" class="collapse">
-                        <li><a href="#">Registrar</a></li>
-                        <li><a href="#">Lista</a></li>
+                        <li><a href="{{ route('juegos.create') }}">Registrar</a></li>
+                        <li><a href="{{ route('juegos.index') }}">Lista</a></li>
                     </ul>
                 </li>
             </ul>

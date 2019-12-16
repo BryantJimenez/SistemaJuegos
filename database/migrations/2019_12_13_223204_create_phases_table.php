@@ -16,7 +16,7 @@ class CreatePhasesTable extends Migration
         Schema::create('phases', function (Blueprint $table) {
             $table->bigIncrements('id');
             $table->string('name');
-            $table->string('slug');
+            $table->string('slug')->unique();
             $table->timestamps();
         });
     }

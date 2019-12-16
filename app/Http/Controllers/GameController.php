@@ -7,6 +7,9 @@ use Illuminate\Http\Request;
 
 class GameController extends Controller
 {
+    public function __construct() {
+        $this->middleware('auth');
+    }
     /**
      * Display a listing of the resource.
      *
@@ -14,7 +17,9 @@ class GameController extends Controller
      */
     public function index()
     {
-        //
+        $games=Game::orderBy('id', 'DESC')->get();
+        $num=1;
+        return view('admin.games.index', compact('games', 'num'));
     }
 
     /**
@@ -24,7 +29,7 @@ class GameController extends Controller
      */
     public function create()
     {
-        //
+        return view('admin.games.create');
     }
 
     /**

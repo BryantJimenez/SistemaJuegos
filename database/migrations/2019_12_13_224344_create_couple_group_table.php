@@ -15,7 +15,7 @@ class CreateCoupleGroupTable extends Migration
     {
         Schema::create('couple_group', function (Blueprint $table) {
             $table->bigIncrements('id');
-            $table->bigInteger('group_id')->unsigned();
+            $table->bigInteger('group_id')->unsigned()->nullable();
             $table->bigInteger('couple_id')->unsigned();
             $table->timestamps();
 

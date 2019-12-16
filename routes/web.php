@@ -66,3 +66,12 @@ Route::delete('/clubes/{slug}', 'ClubController@destroy')->name('clubes.destroy'
 // Route::get('/clubes/{slug}/editar', 'CouplesAssignamentController@edit')->name('couples_assignament.edit');
 // Route::put('/clubes/{slug}', 'CouplesAssignamentController@update')->name('couples_assignament.update');
 // Route::delete('/clubes/{slug}', 'CouplesAssignamentController@destroy')->name('couples_assignament.destroy');
+
+// Juegos
+Route::get('/juegos', 'GameController@index')->name('juegos.index');
+Route::get('/juegos/registrar', 'GameController@create')->name('juegos.create');
+Route::post('/juegos', 'GameController@store')->name('juegos.store');
+Route::get('/juegos/{slug}', 'GameController@show')->name('juegos.show');
+Route::get('/juegos/{slug}/editar', 'GameController@edit')->name('juegos.edit');
+Route::put('/juegos/{slug}', 'GameController@update')->name('juegos.update');
+Route::delete('/juegos/{slug}', 'GameController@destroy')->name('juegos.destroy');
