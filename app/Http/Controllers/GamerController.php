@@ -6,6 +6,7 @@ use App\Gamer;
 use Illuminate\Http\Request;
 use Illuminate\Support\Str;
 use App\Http\Requests\GamerStoreRequest;
+use App\Http\Requests\GamerUpdateRequest;
 
 class GamerController extends Controller
 {
@@ -109,7 +110,7 @@ class GamerController extends Controller
      * @param  \App\Gamer  $gamer
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $slug)
+    public function update(GamerUpdateRequest $request, $slug)
     {
         $data=$request->all();
         $gamer=Gamer::where('slug', $slug)->firstOrFail();

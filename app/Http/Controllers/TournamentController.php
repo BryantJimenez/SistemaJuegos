@@ -8,7 +8,8 @@ use App\Club;
 use App\GamerTournament;
 use Illuminate\Http\Request;
 use Illuminate\Support\Str;
-use App\Http\Requests\TourtamentStoreRequest;
+use App\Http\Requests\TournamentStoreRequest;
+use App\Http\Requests\TournamentUpdateRequest;
 
 class TournamentController extends Controller
 {
@@ -41,7 +42,7 @@ class TournamentController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(TournamentStoreRequest $request)
     {
         $count=Tournament::where('name', request('name'))->count();
         $slug=Str::slug(request('name'), '-');
@@ -103,7 +104,7 @@ class TournamentController extends Controller
      * @param  \App\Tournament  $tournament
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $slug)
+    public function update(TournamentUpdateRequest $request, $slug)
     {
         $tournament=Tournament::where('slug', $slug)->firstOrFail();
         $tournament->fill($request->all())->save();

@@ -6,6 +6,7 @@ use App\Club;
 use Illuminate\Http\Request;
 use Illuminate\Support\Str;
 use App\Http\Requests\ClubStoreRequest;
+use Illuminate\Http\Requests\ClubStoreRequest;
 
 class ClubController extends Controller
 {
@@ -38,7 +39,7 @@ class ClubController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(ClubStoreRequest $request)
     {
          $count=Club::where('name', request('name'))->count();
         $slug=Str::slug(request('name'), '-');
@@ -102,7 +103,7 @@ class ClubController extends Controller
      * @param  \App\Club  $club
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $slug)
+    public function update(ClubUpdateRequest $request, $slug)
     {
         $club=Club::where('slug', $slug)->firstOrFail();
         $club->fill($request->all())->save();
