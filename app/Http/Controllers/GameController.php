@@ -8,7 +8,7 @@ use App\Couple;
 use App\CoupleGroup;
 use App\CoupleGame;
 use Illuminate\Http\Request;
-
+ 
 class GameController extends Controller
 {
     public function __construct() {
@@ -94,7 +94,13 @@ class GameController extends Controller
      */
     public function show($slug)
     {
-        //
+        $game=Game::where('slug', $slug)->firstOrFail();
+        echo json_encode([
+            'type' => $game->type,
+            'state' => gameType($game->state),
+            'points1' => $game->points1,
+            'points2' => $game->points2
+        ]);
     }
 
     /**
@@ -105,7 +111,8 @@ class GameController extends Controller
      */
     public function edit($slug)
     {
-        //
+        $game=Game::where('slug', $slug)->firstOrFail();
+        return view('admin.games.edit', compact("game"));
     }
 
     /**
@@ -115,9 +122,16 @@ class GameController extends Controller
      * @param  \App\Game  $game
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Game $game)
+    public function update(Request $request, $slug)
     {
-        //
+        $game=Game::where('slug', $slug)->firstOrFail();
+        $game->fill($request->all())->save();
+
+        if ($game) {
+            return redirect()->route('juegos.edit', ['slug' => $slug])->with(['type' => 'success', 'title' => 'Edición exitosa', 'msg' => 'El Juego ha sido editado exitosamente.']);
+        } else {
+            return redirect()->route('juegos.edit', ['slug' => $slug])->with(['type' => 'error', 'title' => 'Edición fallida', 'msg' => 'Ha ocurrido un error durante el proceso, intentelo nuevamente.']);
+        }
     }
 
     /**
@@ -126,8 +140,15 @@ class GameController extends Controller
      * @param  \App\Game  $game
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Game $game)
+    public function destroy($slug)
     {
-        //
+        $game=Game::where('slug', $slug)->firstOrFail();
+        $game->delete();
+
+        if ($game) {
+            return redirect()->route('juegos.index')->with(['type' => 'success', 'title' => 'Eliminación exitosa', 'msg' => 'El juego ha sido eliminado exitosamente.']);
+        } else {
+            return redirect()->route('juegos.index')->with(['type' => 'error', 'title' => 'Eliminación fallida', 'msg' => 'Ha ocurrido un error durante el proceso, intentelo nuevamente.']);
+        }
     }
 }

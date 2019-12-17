@@ -85,6 +85,7 @@ class GamerController extends Controller
      */
     public function show($slug)
     {
+
         $gamer=Gamer::where('slug', $slug)->firstOrFail();
         return view('admin.gamers.show', compact("gamer"));
     }

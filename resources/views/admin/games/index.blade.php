@@ -31,7 +31,7 @@
 							@foreach($games as $game)
 							<tr>
 								<td>{{ $num++ }}</td>
-								<td>{{ $game->type }}</td>
+								<td>{!!  gameType($game->type) !!}</td>
 								<td class="d-flex">
 									<button class="btn btn-primary btn-circle btn-sm" onclick="showGame('{{ $game->slug }}')"><i class="mdi mdi-account-card-details"></i></button>&nbsp;&nbsp;
 									<a class="btn btn-info btn-circle btn-sm" href="{{ route('juegos.edit', ['slug' => $game->slug]) }}"><i class="fa fa-edit"></i></a>&nbsp;&nbsp;
@@ -47,7 +47,7 @@
 	</div>
 </div>
 
-<div class="modal fade" id="showUser" tabindex="-1" role="dialog" aria-hidden="true">
+<div class="modal fade" id="showGame" tabindex="-1" role="dialog" aria-hidden="true">
 	<div class="modal-dialog" role="document">
 		<div class="modal-content">
 			<div class="modal-header">
@@ -59,16 +59,22 @@
 			<div class="modal-body">
 				<div class="row">
 					<div class="col-6">
-						<img src="{{ asset('/admins/img/users/usuario.png') }}" id="photoUser" class="rounded img-fluid" alt="Foto del usuario">
+						<label class="col-form-label">Tipo</label>
+						<p id="typeGame"></p>
 					</div>
-					<div class="col-6">
-						<label class="col-form-label">Nombre</label>
-						<p id="nameUser"></p>
-						<label class="col-form-label">Correo</label>
-						<p id="emailUser"></p>
+					<div class="col-6">	
 						<label class="col-form-label">Estado</label>
-						<p id="stateUser"></p>
+						<p id="stateGame"></p>
+					</div>	
+					<div class="col-6">
+						<label class="col-form-label">Puntos "Jugador 1"</label>
+						<p id="points1Game"></p>
 					</div>
+					<div class="col-6">	
+						<label class="col-form-label">Puntos "Jugador 2"</label>
+						<p id="points2Game"></p>
+					</div>	
+					
 				</div>
 			</div>
 			<div class="modal-footer">
@@ -78,17 +84,17 @@
 	</div>
 </div>
 
-<div class="modal fade" id="deleteUser" tabindex="-1" role="dialog" aria-hidden="true">
+<div class="modal fade" id="deleteGame" tabindex="-1" role="dialog" aria-hidden="true">
 	<div class="modal-dialog" role="document">
 		<div class="modal-content">
 			<div class="modal-header">
-				<h5 class="modal-title">¿Estás seguro de que quieres eliminar este usuario?</h5>
+				<h5 class="modal-title">¿Estás seguro de que quieres eliminar este juego?</h5>
 				<button type="button" class="close" data-dismiss="modal" aria-label="Close">
 					<span aria-hidden="true">&times;</span>
 				</button>
 			</div>
 			<div class="modal-footer">
-				<form action="#" method="POST" id="formDeleteUser">
+				<form action="#" method="POST" id="formDeleteGame">
 					@csrf
 					@method('DELETE')
 					<button type="submit" class="btn btn-primary">Eliminar</button>
