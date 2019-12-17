@@ -21,22 +21,38 @@
 			<div class="card-body">
 				<div class="row">
 					<div class="col-12">
+						<p class="h3">Datos del Torneo</p>
 						<p>Nombre: {{ $tournament->name }}</p>
 						<p>Tipo: {{ $tournament->type }}</p>
+						<p>
+							Participantes: {{ $participants }} 
+							@if($tournament->type=="Normal")
+							<button type="button" class="btn btn-success btn-sm btn-circle" onclick="addGamers('{{ $tournament->slug }}')"><i class="fa fa-user"></i></button>
+							@else
+							<button type="button" class="btn btn-success btn-sm btn-circle" onclick="addCouples('{{ $tournament->slug }}')"><i class="mdi mdi-account-multiple"></i></button>
+							@endif
+						</p>
 						<p>Grupos: {{ $tournament->groups }}</p>
 						<p>Fecha de inicio: {{ date('d-m-Y', strtotime($tournament->start)) }}</p>
 						<p>Estado: {{ $tournament->state }}</p>
 					</div>
 					<div class="col-12">
 						<div class="btn-group" role="group">
-							@if($tournament->type=="Normal")
-							<button type="button" class="btn btn-success" onclick="addGamers('{{ $tournament->slug }}')">Agregar Jugador</button>
-							@else
-							<button type="button" class="btn btn-success" onclick="addCouples('{{ $tournament->slug }}')">Agregar Pareja</button>
-							@endif
 							<a class="btn btn-info" href="{{ route('torneos.edit', ['slug' => $tournament->slug]) }}">Editar</a>
 							<a href="{{ route('torneos.index') }}" class="btn btn-secondary">Volver</a>
 						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+
+	<div class="col-6">
+		<div class="card">
+			<div class="card-body">
+				<div class="row">
+					<div class="col-12">
+
 					</div>
 				</div>
 			</div>

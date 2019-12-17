@@ -81,7 +81,8 @@ class TournamentController extends Controller
     {
         $tournament=Tournament::where('slug', $slug)->firstOrFail();
         $clubs=Club::orderBy('id', 'DESC')->get();
-        return view('admin.tournaments.show', compact("tournament", "clubs"));
+        $participants=GamerTournament::where('tournament_id', $tournament->id)->count();
+        return view('admin.tournaments.show', compact("tournament", "clubs", "participants"));
     }
 
     /**
