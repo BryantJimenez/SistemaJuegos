@@ -168,6 +168,7 @@ class TournamentController extends Controller
     public function listGamers($slug)
     {
         //
+        
     }
 
     public function listCouples($slug)
