@@ -90,7 +90,10 @@ class TournamentController extends Controller
         $tournament=Tournament::where('slug', $slug)->firstOrFail();
         $clubs=Club::orderBy('id', 'DESC')->get();
         $participants=GamerTournament::where('tournament_id', $tournament->id)->count();
-        return view('admin.tournaments.show', compact("tournament", "clubs", "participants"));
+        $groups=Group::where('tournament_id', $tournament->id)->where('phase_id', 1)->get();
+        $semifinal=Group::where('tournament_id', $tournament->id)->where('phase_id', 2)->get();
+        $final=Group::where('tournament_id', $tournament->id)->where('phase_id', 3)->get();
+        return view('admin.tournaments.show', compact("tournament", "clubs", "participants", "groups", "semifinal", "final"));
     }
 
     /**
@@ -191,24 +194,24 @@ class TournamentController extends Controller
     public function start($slug)
     {
         $tournament=Tournament::where('slug', $slug)->firstOrFail();
-        $gamersTournament=GamerTournament::where('tournament_id', $tournament->id)->inRandomOrder()->get();
-
-        dd($gamersTournament[0]->gamer_id);
+        $gamersTournament=GamerTournament::select('gamer_id')->where('tournament_id', $tournament->id)->inRandomOrder()->get();
 
         $num=0;
         // Ciclo para crear los grupos
-        for ($i=0; $i < $tournament->groups-1; $i++) {
+        for ($i=0; $i < $tournament->groups; $i++) {
 
             $group=$this->tournamentGroups($tournament->id, $tournament->groups);
 
             if ($tournament->type=="Normal") {
-                $this->tournamentNormalStart($num, $gamersTournament, $group);
+                $loops=$this->tournamentNormalStart($num, $gamersTournament, $group);
+                $num=$loops;
             } else {
-
+                $this->tournamentClubStart($tournament->id, $group);
             }
 
         }
 
+        return redirect()->back()->with(['type' => 'success', 'title' => 'Torneo iniciado', 'msg' => 'El torneo ha sido iniciado exitosamente.']);
     }
 
     public function tournamentGroups($id, $groups)
@@ -231,22 +234,48 @@ class TournamentController extends Controller
     public function tournamentNormalStart($num, $gamersTournament, $group)
     {
         // Ciclo para crear las parejas y agregarlas al grupo
-        for ($j=0; $j < 5; $j++) {
+        for ($j=0; $j < 6; $j++) {
             $data=array('player1_id' => $gamersTournament[$num]->gamer_id, 'player2_id' => $gamersTournament[$num+1]->gamer_id);
             $couple=Couple::create($data);
 
             $coupleGroup=CoupleGroup::create(['couple_id' => $couple->id, 'group_id' => $group]);
             $num+=2;
         }
+
+        return $num;
     }
 
-    public function tournamentClubStart()
+    public function tournamentClubStart($tournament, $group)
     {
         // Ciclo para seleccionar las parejas y agregarlas al grupo
-        for ($j=0; $j < 5; $j++) {
-            
-            $coupleGroup=CoupleGroup::create(['couple_id' => $couple->id, 'group_id' => $group]);
-            $num+=2;
-        }
+        // for ($j=0; $j < 5; $j++) {
+
+        //     $coupleGroup=CoupleGroup::create(['couple_id' => $couple->id, 'group_id' => $group]);
+        //     $num+=2;
+        // }
+    }
+
+    public function phaseGroups($slug)
+    {
+        $tournament=Tournament::where('slug', $slug)->firstOrFail();
+        $groups=Group::where('tournament_id', $tournament->id)->where('phase_id', 1)->get();
+        $phase='Fase de grupos';
+        return view('admin.tournaments.groups', compact("tournament", "groups", "phase"));
+    }
+
+    public function semifinal($slug)
+    {
+        $tournament=Tournament::where('slug', $slug)->firstOrFail();
+        $groups=Group::where('tournament_id', $tournament->id)->where('phase_id', 2)->get();
+        $phase='Semifinal';
+        return view('admin.tournaments.groups', compact("tournament", "groups", "phase"));
+    }
+
+    public function finale($slug)
+    {
+        $tournament=Tournament::where('slug', $slug)->firstOrFail();
+        $groups=Group::where('tournament_id', $tournament->id)->where('phase_id', 3)->get();
+        $phase='Final';
+        return view('admin.tournaments.groups', compact("tournament", "groups", "phase"));
     }
 }

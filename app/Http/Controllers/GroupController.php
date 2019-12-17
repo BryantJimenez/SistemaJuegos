@@ -44,7 +44,7 @@ class GroupController extends Controller
      * @param  \App\Group  $group
      * @return \Illuminate\Http\Response
      */
-    public function show(Group $group)
+    public function show($slug, $phase)
     {
         //
     }

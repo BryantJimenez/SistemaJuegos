@@ -51,6 +51,9 @@ Route::post('/torneos/{slug}/agregar', 'TournamentController@addGamersStore')->n
 Route::get('/torneos/{slug}/jugadores', 'TournamentController@listGamers')->name('torneos.list.gamers');
 Route::get('/torneos/{slug}/parejas', 'TournamentController@listCouples')->name('torneos.list.couples');
 Route::get('/torneos/{slug}/iniciar', 'TournamentController@start')->name('torneos.start');
+Route::get('/torneos/{slug}/fase-de-grupos', 'TournamentController@phaseGroups')->name('torneos.phase.groups');
+Route::get('/torneos/{slug}/semifinal', 'TournamentController@semifinal')->name('torneos.phase.semifinal');
+Route::get('/torneos/{slug}/final', 'TournamentController@finale')->name('torneos.phase.final');
 
 //Clubes
 Route::get('/clubes', 'ClubController@index')->name('clubes.index');

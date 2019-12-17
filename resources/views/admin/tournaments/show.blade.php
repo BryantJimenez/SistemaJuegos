@@ -21,26 +21,23 @@
 			<div class="card-body">
 				<div class="row">
 					<div class="col-12">
-						<p class="h3">Datos del Torneo</p>
-						<p>Nombre: {{ $tournament->name }}</p>
-						<p>Tipo: {{ $tournament->type }}</p>
+						<p class="h3 text-center">Datos del Torneo</p>
+						<p><b>Nombre:</b> {{ $tournament->name }}</p>
+						<p><b>Tipo:</b> {{ $tournament->type }}</p>
 						<p>
-							Participantes: {{ $participants }} 
+							<b>Participantes:</b> {{ $participants }} 
 							@if($tournament->type=="Normal")
 							<button type="button" class="btn btn-success btn-sm btn-circle" onclick="addGamers('{{ $tournament->slug }}')"><i class="fa fa-user"></i></button>
 							@else
 							<button type="button" class="btn btn-success btn-sm btn-circle" onclick="addCouples('{{ $tournament->slug }}')"><i class="mdi mdi-account-multiple"></i></button>
 							@endif
 						</p>
-						<p>Grupos: {{ $tournament->groups }}</p>
-						<p>Fecha de inicio: {{ date('d-m-Y', strtotime($tournament->start)) }}</p>
-						<p>Estado: {{ $tournament->state }}</p>
+						<p><b>Grupos de primera fase:</b> {{ $tournament->groups }}</p>
+						<p><b>Fecha de inicio:</b> {{ date('d-m-Y', strtotime($tournament->start)) }}</p>
+						<p><b>Estado:</b> {!! tournamentState($tournament->state) !!}</p>
 					</div>
 					<div class="col-12">
 						<div class="btn-group" role="group">
-							@if($tournament->groups*12-$participants==0)
-							<a class="btn btn-dark" href="{{ route('torneos.start', ['slug' => $tournament->slug]) }}">Iniciar</a>
-							@endif
 							@if($tournament->type=="Normal")
 							<a class="btn btn-success" href="{{ route('torneos.list.gamers', ['slug' => $tournament->slug]) }}">Jugadores</a>
 							@else
@@ -56,7 +53,59 @@
 		</div>
 	</div>
 
-	
+	<div class="col-6">
+		@if($tournament->groups*12-$participants==0)
+		<div class="card">
+			<div class="card-body">
+				<div class="row">
+					<div class="col-12 text-center">
+						<p class="h3">Ya puedes iniciar el torneo!</p>
+						<a class="btn btn-dark" href="{{ route('torneos.start', ['slug' => $tournament->slug]) }}">Empezar Torneo</a>
+					</div>
+				</div>
+			</div>
+		</div>
+		@endif
+
+		@if($groups->count()>0)
+		<div class="card">
+			<div class="card-body">
+				<div class="row">
+					<div class="col-12 text-center">
+						<p class="h3">Fase de Grupos</p>
+						<a class="btn btn-primary" href="{{ route('torneos.phase.groups', ['slug' => $tournament->slug]) }}">Ver Más</a>
+					</div>
+				</div>
+			</div>
+		</div>
+		@endif
+
+		@if($semifinal->count()>0)
+		<div class="card">
+			<div class="card-body">
+				<div class="row">
+					<div class="col-12 text-center">
+						<p class="h3">Semifinal</p>
+						<a class="btn btn-primary" href="{{ route('torneos.phase.semifinal', ['slug' => $tournament->slug]) }}">Ver Más</a>
+					</div>
+				</div>
+			</div>
+		</div>
+		@endif
+
+		@if($final->count()>0)
+		<div class="card">
+			<div class="card-body">
+				<div class="row">
+					<div class="col-12 text-center">
+						<p class="h3">Final</p>
+						<a class="btn btn-primary" href="{{ route('torneos.phase.final', ['slug' => $tournament->slug]) }}">Ver Más</a>
+					</div>
+				</div>
+			</div>
+		</div>
+		@endif
+	</div>
 </div>
 
 <div class="modal fade" id="addGamers" tabindex="-1" role="dialog" aria-hidden="true">
