@@ -68,7 +68,7 @@ class ClubController extends Controller
         }
     }
 
-    /**
+    /** 
      * Display the specified resource.
      *
      * @param  \App\Club  $club

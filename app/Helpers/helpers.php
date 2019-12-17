@@ -21,3 +21,11 @@ function tournamentState($state) {
 		return '<span class="badge badge-primary">Desconocido</span>';
 	}
 }
+
+function gameType($state) {
+	if ($state==1) {
+		return 'Slam';
+	} else {
+		return 'Torneo';
+	} 
+}
