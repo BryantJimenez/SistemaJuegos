@@ -38,6 +38,11 @@
 					</div>
 					<div class="col-12">
 						<div class="btn-group" role="group">
+							@if($tournament->type=="Normal")
+							<a class="btn btn-success" href="{{ route('torneos.list.gamers', ['slug' => $tournament->slug]) }}">Jugadores</a>
+							@else
+							<a class="btn btn-success" href="{{ route('torneos.list.couples', ['slug' => $tournament->slug]) }}">Parejas</a>
+							@endif
 							<a class="btn btn-info" href="{{ route('torneos.edit', ['slug' => $tournament->slug]) }}">Editar</a>
 							<a href="{{ route('torneos.index') }}" class="btn btn-secondary">Volver</a>
 						</div>

@@ -164,4 +164,14 @@ class TournamentController extends Controller
 
         return redirect()->back()->with(['type' => 'success', 'title' => 'Registro exitoso', 'msg' => 'Los jugadores han sido agregados al torneo exitosamente.']);
     }
+
+    public function listGamers($slug)
+    {
+        //
+    }
+
+    public function listCouples($slug)
+    {
+        //
+    }
 }
