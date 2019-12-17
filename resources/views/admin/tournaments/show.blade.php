@@ -24,14 +24,7 @@
 						<p class="h3 text-center">Datos del Torneo</p>
 						<p><b>Nombre:</b> {{ $tournament->name }}</p>
 						<p><b>Tipo:</b> {{ $tournament->type }}</p>
-						<p>
-							<b>Participantes:</b> {{ $participants }} 
-							@if($tournament->type=="Normal")
-							<button type="button" class="btn btn-success btn-sm btn-circle" onclick="addGamers('{{ $tournament->slug }}')"><i class="fa fa-user"></i></button>
-							@else
-							<button type="button" class="btn btn-success btn-sm btn-circle" onclick="addCouples('{{ $tournament->slug }}')"><i class="mdi mdi-account-multiple"></i></button>
-							@endif
-						</p>
+						<p><b>Participantes:</b> {{ $participants }}</p>
 						<p><b>Grupos de primera fase:</b> {{ $tournament->groups }}</p>
 						<p><b>Fecha de inicio:</b> {{ date('d-m-Y', strtotime($tournament->start)) }}</p>
 						<p><b>Estado:</b> {!! tournamentState($tournament->state) !!}</p>
@@ -54,7 +47,24 @@
 	</div>
 
 	<div class="col-6">
-		@if($tournament->groups*12-$participants==0)
+		@if($tournament->groups*12-$participants>0 && $tournament->state==1)
+		<div class="card">
+			<div class="card-body">
+				<div class="row">
+					<div class="col-12 text-center">
+						<p class="h3">Aún no has ingresado a todos los participantes!</p>
+						@if($tournament->type=="Normal")
+						<button type="button" class="btn btn-success btn-sm btn-circle" onclick="addGamers('{{ $tournament->slug }}')">Agregar Jugadores</button>
+						@else
+						<button type="button" class="btn btn-success btn-sm btn-circle" onclick="addCouples('{{ $tournament->slug }}')">Agregar Pareja</i></button>
+						@endif
+					</div>
+				</div>
+			</div>
+		</div>
+		@endif
+
+		@if($tournament->groups*12-$participants==0 && $tournament->state==1)
 		<div class="card">
 			<div class="card-body">
 				<div class="row">

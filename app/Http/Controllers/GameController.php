@@ -8,6 +8,8 @@ use App\Couple;
 use App\CoupleGroup;
 use App\CoupleGame;
 use Illuminate\Http\Request;
+use App\Http\Requests\GameStoreRequest;
+use App\Http\Requests\GameUpdateRequest;
  
 class GameController extends Controller
 {
@@ -43,9 +45,8 @@ class GameController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(GameStoreRequest $request)
     {
-
         $couple1=request('couple1');
         $gamer1=Gamer::where('slug', $couple1[0])->firstOrFail();
         $gamer2=Gamer::where('slug', $couple1[1])->firstOrFail();
@@ -117,7 +118,7 @@ class GameController extends Controller
      * @param  \App\Game  $game
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $slug)
+    public function update(GameUpdateRequest $request, $slug)
     {
         $game=Game::where('slug', $slug)->firstOrFail();
         $game->fill($request->all())->save();

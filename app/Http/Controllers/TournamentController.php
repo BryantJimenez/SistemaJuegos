@@ -13,6 +13,7 @@ use App\GamerTournament;
 use Illuminate\Http\Request;
 use Illuminate\Support\Str;
 use App\Http\Requests\TourtamentStoreRequest;
+use App\Http\Requests\TourtamentUpdateRequest;
 
 class TournamentController extends Controller
 {
@@ -49,7 +50,7 @@ class TournamentController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(TourtamentStoreRequest $request)
     {
         $count=Tournament::where('name', request('name'))->count();
         $slug=Str::slug(request('name'), '-');
@@ -115,7 +116,7 @@ class TournamentController extends Controller
      * @param  \App\Tournament  $tournament
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $slug)
+    public function update(TourtamentUpdateRequest $request, $slug)
     {
         $tournament=Tournament::where('slug', $slug)->firstOrFail();
         $tournament->fill($request->all())->save();
@@ -259,7 +260,7 @@ class TournamentController extends Controller
     {
         $tournament=Tournament::where('slug', $slug)->firstOrFail();
         $groups=Group::where('tournament_id', $tournament->id)->where('phase_id', 1)->get();
-        $phase='Fase de grupos';
+        $phase=Phase::where('id', 1)->first();
         return view('admin.tournaments.groups', compact("tournament", "groups", "phase"));
     }
 
@@ -267,7 +268,7 @@ class TournamentController extends Controller
     {
         $tournament=Tournament::where('slug', $slug)->firstOrFail();
         $groups=Group::where('tournament_id', $tournament->id)->where('phase_id', 2)->get();
-        $phase='Semifinal';
+        $phase=Phase::where('id', 2)->first();
         return view('admin.tournaments.groups', compact("tournament", "groups", "phase"));
     }
 
@@ -275,7 +276,14 @@ class TournamentController extends Controller
     {
         $tournament=Tournament::where('slug', $slug)->firstOrFail();
         $groups=Group::where('tournament_id', $tournament->id)->where('phase_id', 3)->get();
-        $phase='Final';
+        $phase=Phase::where('id', 3)->first();
         return view('admin.tournaments.groups', compact("tournament", "groups", "phase"));
+    }
+
+    public function group($slug, $phase, $group)
+    {
+        $tournament=Tournament::where('slug', $slug)->firstOrFail();
+        $groups=Group::where('tournament_id', $tournament->id)->where('phase_id', 3)->get();
+        return view('admin.tournaments.group', compact("tournament", "groups", "phase"));
     }
 }
