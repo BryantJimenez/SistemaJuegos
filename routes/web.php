@@ -50,6 +50,7 @@ Route::get('/torneos/{slug}/agregar', 'TournamentController@addGamers')->name('t
 Route::post('/torneos/{slug}/agregar', 'TournamentController@addGamersStore')->name('torneos.store.gamers');
 Route::get('/torneos/{slug}/jugadores', 'TournamentController@listGamers')->name('torneos.list.gamers');
 Route::get('/torneos/{slug}/parejas', 'TournamentController@listCouples')->name('torneos.list.couples');
+Route::get('/torneos/{slug}/iniciar', 'TournamentController@start')->name('torneos.start');
 
 //Clubes
 Route::get('/clubes', 'ClubController@index')->name('clubes.index');

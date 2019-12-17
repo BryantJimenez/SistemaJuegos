@@ -38,12 +38,16 @@
 					</div>
 					<div class="col-12">
 						<div class="btn-group" role="group">
+							@if($tournament->groups*12-$participants==0)
+							<a class="btn btn-dark" href="{{ route('torneos.start', ['slug' => $tournament->slug]) }}">Iniciar</a>
+							@endif
 							@if($tournament->type=="Normal")
 							<a class="btn btn-success" href="{{ route('torneos.list.gamers', ['slug' => $tournament->slug]) }}">Jugadores</a>
 							@else
 							<a class="btn btn-success" href="{{ route('torneos.list.couples', ['slug' => $tournament->slug]) }}">Parejas</a>
 							@endif
 							<a class="btn btn-info" href="{{ route('torneos.edit', ['slug' => $tournament->slug]) }}">Editar</a>
+							<button class="btn btn-danger" onclick="deleteTournament('{{ $tournament->slug }}')">Eliminar</button>
 							<a href="{{ route('torneos.index') }}" class="btn btn-secondary">Volver</a>
 						</div>
 					</div>
@@ -52,17 +56,7 @@
 		</div>
 	</div>
 
-	<div class="col-6">
-		<div class="card">
-			<div class="card-body">
-				<div class="row">
-					<div class="col-12">
-
-					</div>
-				</div>
-			</div>
-		</div>
-	</div>
+	
 </div>
 
 <div class="modal fade" id="addGamers" tabindex="-1" role="dialog" aria-hidden="true">
@@ -125,6 +119,27 @@
 					</div>
 				</form>
 				<p class="h3 text-danger text-center" id="formAddCouplesFull">Este torneo esta lleno</p>
+			</div>
+		</div>
+	</div>
+</div>
+
+<div class="modal fade" id="deleteTournament" tabindex="-1" role="dialog" aria-hidden="true">
+	<div class="modal-dialog" role="document">
+		<div class="modal-content">
+			<div class="modal-header">
+				<h5 class="modal-title">¿Estás seguro de que quieres eliminar este torneo?</h5>
+				<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+					<span aria-hidden="true">&times;</span>
+				</button>
+			</div>
+			<div class="modal-footer">
+				<form action="#" method="POST" id="formDeleteTournament">
+					@csrf
+					@method('DELETE')
+					<button type="submit" class="btn btn-primary">Eliminar</button>
+				</form>
+				<button type="button" class="btn btn-danger" data-dismiss="modal">Cancelar</button>
 			</div>
 		</div>
 	</div>

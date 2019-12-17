@@ -5,6 +5,10 @@ namespace App\Http\Controllers;
 use App\Tournament;
 use App\Gamer;
 use App\Club;
+use App\Group;
+use App\Phase;
+use App\Couple;
+use App\CoupleGroup;
 use App\GamerTournament;
 use Illuminate\Http\Request;
 use Illuminate\Support\Str;
@@ -12,6 +16,10 @@ use App\Http\Requests\TourtamentStoreRequest;
 
 class TournamentController extends Controller
 {
+    public function __construct()
+    {
+        $this->middleware('auth');
+    }
     /**
      * Display a listing of the resource.
      *
@@ -140,10 +148,14 @@ class TournamentController extends Controller
         $gamers_tournament=GamerTournament::where('tournament_id', $tournament->id)->count();
         $quotas=($tournament->groups*12)-$gamers_tournament;
 
+        // Agregar jugadores al arreglo
         $gamers=Gamer::get();
         $num=0;
         foreach ($gamers as $gamer) {
+            // Se busca si el jugador ya ha sido agregado al torneo
             $count=Gamer::leftJoin('gamer_tournament', 'gamers.id', '=', 'gamer_tournament.gamer_id')->where('gamer_tournament.gamer_id', '=', $gamer->id)->where('gamer_tournament.tournament_id', '=', $tournament->id)->count();
+
+            // Si no ha sido agregado es ingresado en el arreglo
             if ($count==0) {
                 $data[$num]=['cupos' => $quotas, 'slug' => $gamer->slug, 'nombre_completo' => $gamer->name." ".$gamer->lastname];
                 $num++;
@@ -168,11 +180,73 @@ class TournamentController extends Controller
     public function listGamers($slug)
     {
         //
-        
+
     }
 
     public function listCouples($slug)
     {
         //
+    }
+
+    public function start($slug)
+    {
+        $tournament=Tournament::where('slug', $slug)->firstOrFail();
+        $gamersTournament=GamerTournament::where('tournament_id', $tournament->id)->inRandomOrder()->get();
+
+        dd($gamersTournament[0]->gamer_id);
+
+        $num=0;
+        // Ciclo para crear los grupos
+        for ($i=0; $i < $tournament->groups-1; $i++) {
+
+            $group=$this->tournamentGroups($tournament->id, $tournament->groups);
+
+            if ($tournament->type=="Normal") {
+                $this->tournamentNormalStart($num, $gamersTournament, $group);
+            } else {
+
+            }
+
+        }
+
+    }
+
+    public function tournamentGroups($id, $groups)
+    {
+        $count=Group::where('tournament_id', $id)->count();
+        $name="Grupo ".($count+1);
+        $slug=Str::slug($name, '-');
+        if ($groups>2) {
+            $data=array('name' => $name, 'slug' => $slug, 'tournament_id' => $id, 'phase_id' => 1);
+        } elseif ($groups==2) {
+            $data=array('name' => $name, 'slug' => $slug, 'tournament_id' => $id, 'phase_id' => 2);
+        } else {
+            $data=array('name' => $name, 'slug' => $slug, 'tournament_id' => $id, 'phase_id' => 3);
+        }
+        $group=Group::create($data);
+
+        return $group->id;
+    }
+
+    public function tournamentNormalStart($num, $gamersTournament, $group)
+    {
+        // Ciclo para crear las parejas y agregarlas al grupo
+        for ($j=0; $j < 5; $j++) {
+            $data=array('player1_id' => $gamersTournament[$num]->gamer_id, 'player2_id' => $gamersTournament[$num+1]->gamer_id);
+            $couple=Couple::create($data);
+
+            $coupleGroup=CoupleGroup::create(['couple_id' => $couple->id, 'group_id' => $group]);
+            $num+=2;
+        }
+    }
+
+    public function tournamentClubStart()
+    {
+        // Ciclo para seleccionar las parejas y agregarlas al grupo
+        for ($j=0; $j < 5; $j++) {
+            
+            $coupleGroup=CoupleGroup::create(['couple_id' => $couple->id, 'group_id' => $group]);
+            $num+=2;
+        }
     }
 }

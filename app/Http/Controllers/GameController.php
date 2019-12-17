@@ -55,16 +55,12 @@ class GameController extends Controller
         $gamer4=Gamer::where('slug', $couple2[1])->firstOrFail();
 
         $coupleArray1=array('player1_id' => $gamer1->id, 'player2_id' => $gamer2->id);
-        Couple::create($coupleArray1)->save();
-        $couples1=Couple::orderBy('id', 'DESC')->first();
+        $couples1=Couple::create($coupleArray1);
         $coupleArray2=array('player1_id' => $gamer3->id, 'player2_id' => $gamer4->id);
-        Couple::create($coupleArray2)->save();
-        $couples2=Couple::orderBy('id', 'DESC')->first();
+        $couples2=Couple::create($coupleArray2);
 
-        CoupleGroup::create(['couple_id' => $couples1->id])->save();
-        $coupleGroup1=CoupleGroup::orderBy('id', 'DESC')->first();
-        CoupleGroup::create(['couple_id' => $couples2->id])->save();
-        $coupleGroup2=CoupleGroup::orderBy('id', 'DESC')->first();
+        $coupleGroup1=CoupleGroup::create(['couple_id' => $couples1->id]);
+        $coupleGroup2=CoupleGroup::create(['couple_id' => $couples2->id]);
 
         $count=Game::all()->count();
         if (request('points1')==2 || request('points2')==2) {
@@ -74,8 +70,7 @@ class GameController extends Controller
         }
 
         $data=array('slug' => 'juego-'.$count, 'type' => 1, 'state' => $state, 'points1' => request('points1'), 'points2' => request('points2'));
-        Game::create($data)->save();
-        $game=Game::orderBy('id', 'DESC')->first();
+        $game=Game::create($data);
 
         $coupleGame=CoupleGame::create(['couple_group1_id' => $coupleGroup1->id, 'couple_group2_id' => $coupleGroup2->id, 'game_id' => $game->id])->save();
 
