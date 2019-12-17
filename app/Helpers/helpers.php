@@ -24,8 +24,8 @@ function tournamentState($state) {
 
 function gameType($state) {
 	if ($state==1) {
-		return '<span class="badge badge-success">Slam</span>';
+		return 'Slam';
 	} else {
-		return '<span class="badge badge-warning">Torneo</span>';
+		return 'Torneo';
 	} 
 }
