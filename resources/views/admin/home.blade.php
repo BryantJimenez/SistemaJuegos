@@ -6,19 +6,10 @@
 @section('content')
 
 <div class="row">
-	@if (session('login'))
-	<div class="col-12">
-		<div class="card">
-			<div class="card-body">
-				<h1 class="text-center">Bienvenid@ {{ Auth::user()->name }} a ActivosCP</h1>
-			</div>
-		</div>
-	</div>
-	@endif
 	<div class="col-lg-12">
 		<div class="card">
 			<div class="card-body little-profile text-center">
-				<h3 class="m-b-3">Bienvenid@ {{ Auth::user()->name. " ".Auth::user()->lastname }} a ActivosCP</h3>
+				<h3 class="m-b-3">Bienvenid@ {{ Auth::user()->name." ".Auth::user()->lastname }}</h3>
 			</div>
 			<div class="text-center bg-light">
 				<div class="row">

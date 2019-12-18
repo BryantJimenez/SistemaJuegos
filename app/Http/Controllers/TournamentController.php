@@ -307,4 +307,29 @@ class TournamentController extends Controller
         $num=1;
         return view('admin.tournaments.group', compact("tournament", "groups", "phase", "games", "num"));
     }
+
+    public function game($slug)
+    {
+        $game=Game::where('slug', $slug)->firstOrFail();
+        $couple1=coupleNames($game->couples_groups[0]->couple_group1_id);
+        $couple2=coupleNames($game->couples_groups[0]->couple_group2_id);
+        echo json_encode([
+            'couple1' => $couple1,
+            'couple2' => $couple2,
+            'points1' => $game->points1,
+            'points2' => $game->points2
+        ]);
+    }
+
+    public function gameStore($slug, Request $request)
+    {
+        $game=Game::where('slug', $slug)->firstOrFail();
+        $game->fill($request->all())->save();
+
+        if ($game) {
+            return redirect()->back()->with(['type' => 'success', 'title' => 'Juego registrado', 'msg' => 'El juego del torneo ha sido registrado exitosamente.']);
+        } else {
+            return redirect()->back()->with(['type' => 'error', 'title' => 'Registro fallido', 'msg' => 'Ha ocurrido un error durante el proceso, intentelo nuevamente.']);
+        }
+    }
 }
