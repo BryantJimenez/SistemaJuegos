@@ -14,13 +14,9 @@ use App\Game;
 use App\CoupleGame;
 use Illuminate\Http\Request;
 use Illuminate\Support\Str;
-<<<<<<< HEAD
 use App\Http\Requests\TournamentStoreRequest;
 use App\Http\Requests\TournamentUpdateRequest;
-=======
-use App\Http\Requests\TourtamentStoreRequest;
-use App\Http\Requests\TourtamentUpdateRequest;
->>>>>>> 73819eaace1725a56f54796063036388980c38c2
+
 
 class TournamentController extends Controller
 {
@@ -57,11 +53,8 @@ class TournamentController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-<<<<<<< HEAD
+
     public function store(TournamentStoreRequest $request)
-=======
-    public function store(TourtamentStoreRequest $request)
->>>>>>> 73819eaace1725a56f54796063036388980c38c2
     {
         $count=Tournament::where('name', request('name'))->count();
         $slug=Str::slug(request('name'), '-');
@@ -98,7 +91,7 @@ class TournamentController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function show($slug)
-    {
+    { 
         $tournament=Tournament::where('slug', $slug)->firstOrFail();
         $clubs=Club::orderBy('id', 'DESC')->get();
         $participants=GamerTournament::where('tournament_id', $tournament->id)->count();
@@ -127,11 +120,7 @@ class TournamentController extends Controller
      * @param  \App\Tournament  $tournament
      * @return \Illuminate\Http\Response
      */
-<<<<<<< HEAD
     public function update(TournamentUpdateRequest $request, $slug)
-=======
-    public function update(TourtamentUpdateRequest $request, $slug)
->>>>>>> 73819eaace1725a56f54796063036388980c38c2
     {
         $tournament=Tournament::where('slug', $slug)->firstOrFail();
         $tournament->fill($request->all())->save();
@@ -198,13 +187,18 @@ class TournamentController extends Controller
 
     public function listGamers($slug)
     {
-        //
+        $tournament=Tournament::where('slug', $slug)->firstOrFail(); 
+        $num=1;
+
+        return view('admin.tournaments.list-gamers', compact('tournament', 'num'));
 
     }
 
     public function listCouples($slug)
     {
-        //
+        $tournament=Tournament::where('slug', $slug)->firstOrFail(); 
+        $num=1;
+        return view('admin.tournaments.list-couples');
     }
 
     public function start($slug)
