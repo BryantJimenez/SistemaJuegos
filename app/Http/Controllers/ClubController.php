@@ -8,6 +8,7 @@ use Illuminate\Support\Str;
 use App\Http\Requests\ClubStoreRequest;
 use App\Http\Requests\ClubUpdateRequest;
 
+
 class ClubController extends Controller
 {
     public function __construct()

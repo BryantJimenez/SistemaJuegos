@@ -52,6 +52,7 @@ class TournamentController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
+
     public function store(TournamentStoreRequest $request)
     {
         $count=Tournament::where('name', request('name'))->count();
@@ -89,7 +90,7 @@ class TournamentController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function show($slug)
-    {
+    { 
         $tournament=Tournament::where('slug', $slug)->firstOrFail();
         $clubs=Club::orderBy('id', 'DESC')->get();
         $participants=GamerTournament::where('tournament_id', $tournament->id)->count();
@@ -185,13 +186,18 @@ class TournamentController extends Controller
 
     public function listGamers($slug)
     {
-        //
+        $tournament=Tournament::where('slug', $slug)->firstOrFail(); 
+        $num=1;
+
+        return view('admin.tournaments.list-gamers', compact('tournament', 'num'));
 
     }
 
     public function listCouples($slug)
     {
-        //
+        $tournament=Tournament::where('slug', $slug)->firstOrFail(); 
+        $num=1;
+        return view('admin.tournaments.list-couples');
     }
 
     public function start($slug)

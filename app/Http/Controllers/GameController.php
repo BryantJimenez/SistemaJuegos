@@ -8,8 +8,9 @@ use App\Couple;
 use App\CoupleGroup;
 use App\CoupleGame;
 use Illuminate\Http\Request;
-use App\Http\Requests\GameStoreRequest;
-use App\Http\Requests\GameUpdateRequest;
+use Illuminate\Http\Requests\GameStoreRequest;
+use Illuminate\Http\Requests\GameUpdateRequest;
+
  
 class GameController extends Controller
 {
