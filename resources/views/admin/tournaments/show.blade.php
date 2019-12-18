@@ -21,26 +21,100 @@
 			<div class="card-body">
 				<div class="row">
 					<div class="col-12">
-						<p>Nombre: {{ $tournament->name }}</p>
-						<p>Tipo: {{ $tournament->type }}</p>
-						<p>Grupos: {{ $tournament->groups }}</p>
-						<p>Fecha de inicio: {{ date('d-m-Y', strtotime($tournament->start)) }}</p>
-						<p>Estado: {{ $tournament->state }}</p>
+						<p class="h3 text-center">Datos del Torneo</p>
+						<p><b>Nombre:</b> {{ $tournament->name }}</p>
+						<p><b>Tipo:</b> {{ $tournament->type }}</p>
+						<p><b>Participantes:</b> {{ $participants }}</p>
+						<p><b>Grupos de primera fase:</b> {{ $tournament->groups }}</p>
+						<p><b>Fecha de inicio:</b> {{ date('d-m-Y', strtotime($tournament->start)) }}</p>
+						<p><b>Estado:</b> {!! tournamentState($tournament->state) !!}</p>
 					</div>
 					<div class="col-12">
 						<div class="btn-group" role="group">
 							@if($tournament->type=="Normal")
-							<button type="button" class="btn btn-success" onclick="addGamers('{{ $tournament->slug }}')">Agregar Jugador</button>
+							<a class="btn btn-success" href="{{ route('torneos.list.gamers', ['slug' => $tournament->slug]) }}">Jugadores</a>
 							@else
-							<button type="button" class="btn btn-success" onclick="addCouples('{{ $tournament->slug }}')">Agregar Pareja</button>
+							<a class="btn btn-success" href="{{ route('torneos.list.couples', ['slug' => $tournament->slug]) }}">Parejas</a>
 							@endif
 							<a class="btn btn-info" href="{{ route('torneos.edit', ['slug' => $tournament->slug]) }}">Editar</a>
+							<button class="btn btn-danger" onclick="deleteTournament('{{ $tournament->slug }}')">Eliminar</button>
 							<a href="{{ route('torneos.index') }}" class="btn btn-secondary">Volver</a>
 						</div>
 					</div>
 				</div>
 			</div>
 		</div>
+	</div>
+
+	<div class="col-6">
+		@if($tournament->groups*12-$participants>0 && $tournament->state==1)
+		<div class="card">
+			<div class="card-body">
+				<div class="row">
+					<div class="col-12 text-center">
+						<p class="h3">Aún no has ingresado a todos los participantes!</p>
+						@if($tournament->type=="Normal")
+						<button type="button" class="btn btn-success btn-sm btn-circle" onclick="addGamers('{{ $tournament->slug }}')">Agregar Jugadores</button>
+						@else
+						<button type="button" class="btn btn-success btn-sm btn-circle" onclick="addCouples('{{ $tournament->slug }}')">Agregar Pareja</i></button>
+						@endif
+					</div>
+				</div>
+			</div>
+		</div>
+		@endif
+
+		@if($tournament->groups*12-$participants==0 && $tournament->state==1)
+		<div class="card">
+			<div class="card-body">
+				<div class="row">
+					<div class="col-12 text-center">
+						<p class="h3">Ya puedes iniciar el torneo!</p>
+						<a class="btn btn-dark" href="{{ route('torneos.start', ['slug' => $tournament->slug]) }}">Empezar Torneo</a>
+					</div>
+				</div>
+			</div>
+		</div>
+		@endif
+
+		@if($groups->count()>0)
+		<div class="card">
+			<div class="card-body">
+				<div class="row">
+					<div class="col-12 text-center">
+						<p class="h3">Fase de Grupos</p>
+						<a class="btn btn-primary" href="{{ route('torneos.phase.groups', ['slug' => $tournament->slug]) }}">Ver Más</a>
+					</div>
+				</div>
+			</div>
+		</div>
+		@endif
+
+		@if($semifinal->count()>0)
+		<div class="card">
+			<div class="card-body">
+				<div class="row">
+					<div class="col-12 text-center">
+						<p class="h3">Semifinal</p>
+						<a class="btn btn-primary" href="{{ route('torneos.phase.semifinal', ['slug' => $tournament->slug]) }}">Ver Más</a>
+					</div>
+				</div>
+			</div>
+		</div>
+		@endif
+
+		@if($final->count()>0)
+		<div class="card">
+			<div class="card-body">
+				<div class="row">
+					<div class="col-12 text-center">
+						<p class="h3">Final</p>
+						<a class="btn btn-primary" href="{{ route('torneos.phase.final', ['slug' => $tournament->slug]) }}">Ver Más</a>
+					</div>
+				</div>
+			</div>
+		</div>
+		@endif
 	</div>
 </div>
 
@@ -104,6 +178,27 @@
 					</div>
 				</form>
 				<p class="h3 text-danger text-center" id="formAddCouplesFull">Este torneo esta lleno</p>
+			</div>
+		</div>
+	</div>
+</div>
+
+<div class="modal fade" id="deleteTournament" tabindex="-1" role="dialog" aria-hidden="true">
+	<div class="modal-dialog" role="document">
+		<div class="modal-content">
+			<div class="modal-header">
+				<h5 class="modal-title">¿Estás seguro de que quieres eliminar este torneo?</h5>
+				<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+					<span aria-hidden="true">&times;</span>
+				</button>
+			</div>
+			<div class="modal-footer">
+				<form action="#" method="POST" id="formDeleteTournament">
+					@csrf
+					@method('DELETE')
+					<button type="submit" class="btn btn-primary">Eliminar</button>
+				</form>
+				<button type="button" class="btn btn-danger" data-dismiss="modal">Cancelar</button>
 			</div>
 		</div>
 	</div>

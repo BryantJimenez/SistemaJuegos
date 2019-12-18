@@ -5,14 +5,29 @@ namespace App\Http\Controllers;
 use App\Tournament;
 use App\Gamer;
 use App\Club;
+use App\Group;
+use App\Phase;
+use App\Couple;
+use App\CoupleGroup;
 use App\GamerTournament;
+use App\Game;
+use App\CoupleGame;
 use Illuminate\Http\Request;
 use Illuminate\Support\Str;
+<<<<<<< HEAD
 use App\Http\Requests\TournamentStoreRequest;
 use App\Http\Requests\TournamentUpdateRequest;
+=======
+use App\Http\Requests\TourtamentStoreRequest;
+use App\Http\Requests\TourtamentUpdateRequest;
+>>>>>>> 73819eaace1725a56f54796063036388980c38c2
 
 class TournamentController extends Controller
 {
+    public function __construct()
+    {
+        $this->middleware('auth');
+    }
     /**
      * Display a listing of the resource.
      *
@@ -42,7 +57,11 @@ class TournamentController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
+<<<<<<< HEAD
     public function store(TournamentStoreRequest $request)
+=======
+    public function store(TourtamentStoreRequest $request)
+>>>>>>> 73819eaace1725a56f54796063036388980c38c2
     {
         $count=Tournament::where('name', request('name'))->count();
         $slug=Str::slug(request('name'), '-');
@@ -82,7 +101,11 @@ class TournamentController extends Controller
     {
         $tournament=Tournament::where('slug', $slug)->firstOrFail();
         $clubs=Club::orderBy('id', 'DESC')->get();
-        return view('admin.tournaments.show', compact("tournament", "clubs"));
+        $participants=GamerTournament::where('tournament_id', $tournament->id)->count();
+        $groups=Group::where('tournament_id', $tournament->id)->where('phase_id', 1)->get();
+        $semifinal=Group::where('tournament_id', $tournament->id)->where('phase_id', 2)->get();
+        $final=Group::where('tournament_id', $tournament->id)->where('phase_id', 3)->get();
+        return view('admin.tournaments.show', compact("tournament", "clubs", "participants", "groups", "semifinal", "final"));
     }
 
     /**
@@ -104,7 +127,11 @@ class TournamentController extends Controller
      * @param  \App\Tournament  $tournament
      * @return \Illuminate\Http\Response
      */
+<<<<<<< HEAD
     public function update(TournamentUpdateRequest $request, $slug)
+=======
+    public function update(TourtamentUpdateRequest $request, $slug)
+>>>>>>> 73819eaace1725a56f54796063036388980c38c2
     {
         $tournament=Tournament::where('slug', $slug)->firstOrFail();
         $tournament->fill($request->all())->save();
@@ -140,10 +167,14 @@ class TournamentController extends Controller
         $gamers_tournament=GamerTournament::where('tournament_id', $tournament->id)->count();
         $quotas=($tournament->groups*12)-$gamers_tournament;
 
+        // Agregar jugadores al arreglo
         $gamers=Gamer::get();
         $num=0;
         foreach ($gamers as $gamer) {
+            // Se busca si el jugador ya ha sido agregado al torneo
             $count=Gamer::leftJoin('gamer_tournament', 'gamers.id', '=', 'gamer_tournament.gamer_id')->where('gamer_tournament.gamer_id', '=', $gamer->id)->where('gamer_tournament.tournament_id', '=', $tournament->id)->count();
+
+            // Si no ha sido agregado es ingresado en el arreglo
             if ($count==0) {
                 $data[$num]=['cupos' => $quotas, 'slug' => $gamer->slug, 'nombre_completo' => $gamer->name." ".$gamer->lastname];
                 $num++;
@@ -163,5 +194,123 @@ class TournamentController extends Controller
         }
 
         return redirect()->back()->with(['type' => 'success', 'title' => 'Registro exitoso', 'msg' => 'Los jugadores han sido agregados al torneo exitosamente.']);
+    }
+
+    public function listGamers($slug)
+    {
+        //
+
+    }
+
+    public function listCouples($slug)
+    {
+        //
+    }
+
+    public function start($slug)
+    {
+        $tournament=Tournament::where('slug', $slug)->firstOrFail();
+        $gamersTournament=GamerTournament::select('gamer_id')->where('tournament_id', $tournament->id)->inRandomOrder()->get();
+
+        $num=0;
+        // Ciclo para crear los grupos
+        for ($i=0; $i < $tournament->groups; $i++) {
+
+            $group=$this->tournamentGroups($tournament->id, $tournament->groups);
+
+            if ($tournament->type=="Normal") {
+                $loops=$this->tournamentNormalStart($num, $gamersTournament, $group);
+                $num=$loops;
+            } else {
+                $this->tournamentClubStart($tournament->id, $group);
+            }
+
+            // Se crean los juegos de la primera vuelta
+            $couples=CoupleGroup::where('group_id', $group)->get();
+            for ($j=0; $j < 5; $j+=2) {
+                $countGame=Game::all()->count();
+                $game=Game::create(['slug' => 'juego-'.$countGame, 'type' => 2, 'state' => 1]);
+                CoupleGame::create(['couple_group1_id' => $couples[$j]->id, 'couple_group2_id' => $couples[$j+1]->id, 'game_id' => $game->id])->save();
+            }
+
+        }
+
+        $tournament->fill(['state' => 2])->save();
+
+        return redirect()->back()->with(['type' => 'success', 'title' => 'Torneo iniciado', 'msg' => 'El torneo ha sido iniciado exitosamente.']);
+    }
+
+    public function tournamentGroups($id, $groups)
+    {
+        $count=Group::where('tournament_id', $id)->count();
+        $name="Grupo ".($count+1);
+        $slug=Str::slug($name, '-');
+        if ($groups>2) {
+            $data=array('name' => $name, 'slug' => $slug, 'tournament_id' => $id, 'phase_id' => 1);
+        } elseif ($groups==2) {
+            $data=array('name' => $name, 'slug' => $slug, 'tournament_id' => $id, 'phase_id' => 2);
+        } else {
+            $data=array('name' => $name, 'slug' => $slug, 'tournament_id' => $id, 'phase_id' => 3);
+        }
+        $group=Group::create($data);
+
+        return $group->id;
+    }
+
+    public function tournamentNormalStart($num, $gamersTournament, $group)
+    {
+        // Ciclo para crear las parejas y agregarlas al grupo
+        for ($j=0; $j < 6; $j++) {
+            $data=array('player1_id' => $gamersTournament[$num]->gamer_id, 'player2_id' => $gamersTournament[$num+1]->gamer_id);
+            $couple=Couple::create($data);
+
+            $coupleGroup=CoupleGroup::create(['couple_id' => $couple->id, 'group_id' => $group]);
+            $num+=2;
+        }
+
+        return $num;
+    }
+
+    public function tournamentClubStart($tournament, $group)
+    {
+        // Ciclo para seleccionar las parejas y agregarlas al grupo
+        // for ($j=0; $j < 5; $j++) {
+
+        //     $coupleGroup=CoupleGroup::create(['couple_id' => $couple->id, 'group_id' => $group]);
+        //     $num+=2;
+        // }
+    }
+
+    public function phaseGroups($slug)
+    {
+        $tournament=Tournament::where('slug', $slug)->firstOrFail();
+        $groups=Group::where('tournament_id', $tournament->id)->where('phase_id', 1)->get();
+        $phase=Phase::where('id', 1)->first();
+        return view('admin.tournaments.groups', compact("tournament", "groups", "phase"));
+    }
+
+    public function semifinal($slug)
+    {
+        $tournament=Tournament::where('slug', $slug)->firstOrFail();
+        $groups=Group::where('tournament_id', $tournament->id)->where('phase_id', 2)->get();
+        $phase=Phase::where('id', 2)->first();
+        return view('admin.tournaments.groups', compact("tournament", "groups", "phase"));
+    }
+
+    public function finale($slug)
+    {
+        $tournament=Tournament::where('slug', $slug)->firstOrFail();
+        $groups=Group::where('tournament_id', $tournament->id)->where('phase_id', 3)->get();
+        $phase=Phase::where('id', 3)->first();
+        return view('admin.tournaments.groups', compact("tournament", "groups", "phase"));
+    }
+
+    public function group($slug, $phase, $group)
+    {
+        $tournament=Tournament::where('slug', $slug)->firstOrFail();
+        $phase=Phase::where('slug', $phase)->firstOrFail();
+        $groups=Group::where('slug', $group)->where('tournament_id', $tournament->id)->firstOrFail();
+        $groups=CoupleGame::where('slug', $group)->where('tournament_id', $tournament->id)->firstOrFail();
+        return view('admin.tournaments.group', compact("tournament", "groups", "phase"));
     }
 }

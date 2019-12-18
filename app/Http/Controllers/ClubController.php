@@ -6,10 +6,18 @@ use App\Club;
 use Illuminate\Http\Request;
 use Illuminate\Support\Str;
 use App\Http\Requests\ClubStoreRequest;
+<<<<<<< HEAD
 use Illuminate\Http\Requests\ClubStoreRequest;
+=======
+use App\Http\Requests\ClubUpdateRequest;
+>>>>>>> 73819eaace1725a56f54796063036388980c38c2
 
 class ClubController extends Controller
 {
+    public function __construct()
+    {
+        $this->middleware('auth');
+    }
     /**
      * Display a listing of the resource.
      *

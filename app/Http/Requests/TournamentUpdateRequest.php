@@ -27,7 +27,7 @@ class TournamentUpdateRequest extends FormRequest
             'name' => 'required|string|min:2|max:191',
             'groups' => 'required|integer|min:2|max:6',
             'start' => 'required|date',
-            'type' => 'required|string|min:4|max:6'
+            'type' => 'required|string'
         ];
     }
 }
