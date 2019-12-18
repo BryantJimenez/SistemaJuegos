@@ -4,6 +4,8 @@
 @section('page-title', 'Registro de Clubes')
 
 @section('breadcrumb')
+<li class="breadcrumb-item"><a href="{{ route('clubes.index') }}">Clubes</a></li>
+<li class="breadcrumb-item active">Registro</li>
 @endsection
 
 @section('content')

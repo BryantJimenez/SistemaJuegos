@@ -40,10 +40,12 @@
 								<td>{{ $tournament->type }}</td>
 								<td>{!! tournamentState($tournament->state) !!}</td>
 								<td class="d-flex">
+									@if($tournament->state==1)
 									@if($tournament->type=="Normal")
 									<button class="btn btn-success btn-circle btn-sm" onclick="addGamers('{{ $tournament->slug }}')"><i class="fa fa-user"></i></button>&nbsp;&nbsp;
 									@else
 									<button class="btn btn-success btn-circle btn-sm" onclick="addCouples('{{ $tournament->slug }}')"><i class="mdi mdi-account-multiple"></i></button>&nbsp;&nbsp;
+									@endif
 									@endif
 									<a class="btn btn-primary btn-circle btn-sm" href="{{ route('torneos.show', ['slug' => $tournament->slug]) }}"><i class="fa fa-trophy"></i></a>&nbsp;&nbsp;
 									<a class="btn btn-info btn-circle btn-sm" href="{{ route('torneos.edit', ['slug' => $tournament->slug]) }}"><i class="fa fa-edit"></i></a>&nbsp;&nbsp;

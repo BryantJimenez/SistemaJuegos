@@ -23,7 +23,7 @@ class GameController extends Controller
      */
     public function index()
     {
-        $games=Game::orderBy('id', 'DESC')->get();
+        $games=Game::where('type', 1)->orderBy('id', 'DESC')->get();
         $num=1;
         return view('admin.games.index', compact('games', 'num'));
     }

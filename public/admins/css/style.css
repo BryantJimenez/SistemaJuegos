@@ -5908,3 +5908,9 @@ label.error {
   top: 5px;
   right: 20px;
 }
+
+.d-flex-wrap-center {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+}

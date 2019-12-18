@@ -4,7 +4,7 @@
 @section('page-title', 'Crear Torneo ')
 
 @section('breadcrumb')
-<li class="breadcrumb-item"><a href="">Torneos</a></li>
+<li class="breadcrumb-item"><a href="{{ route('torneos.index') }}">Torneos</a></li>
 <li class="breadcrumb-item active">Registro</li>
 @endsection
 
@@ -46,7 +46,6 @@
 							<label class="col-form-label">Fecha de Inicio<b class="text-danger">*</b></label>
 							<input class="form-control date" type="text" name="start" required placeholder="Seleccione una fecha" value="{{ old('start') }}">
 						</div>
-						<input type="hidden" name="state" value="1">
 						<div class="form-group col-12">
 							<div class="btn-group" role="group">
 								<button type="submit" class="btn btn-primary" action="gamer">Guardar</button>

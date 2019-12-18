@@ -4,10 +4,16 @@
 @section('page-title', 'Registro de Clubes')
 
 @section('breadcrumb')
+<li class="breadcrumb-item"><a href="{{ route('clubes.index') }}">Clubes</a></li>
+<li class="breadcrumb-item active">Editar</li>
+@endsection
+
+@section('links')
+<link rel="stylesheet" href="{{ asset('/admins/vendors/lobibox/Lobibox.min.css') }}">
 @endsection
 
 @section('content')
- 
+
 <div class="row">
 	<div class="col-12">
 		<div class="card">
@@ -24,13 +30,13 @@
 							<label class="col-form-label">Nombre<b class="text-danger">*</b></label>
 							<input class="form-control" type="text" name="name" required placeholder="Introduzca un nombre" value="{{ $club->name }}">
 						</div>
-					</div>
 						<div class="form-group col-12">
 							<div class="btn-group" role="group">
 								<button type="submit" class="btn btn-primary" action="gamer">Guardar</button>
 								<a href="{{ route('clubes.index') }}" class="btn btn-secondary">Volver</a>
 							</div>
 						</div>
+					</div>
 				</form>
 			</div>
 		</div>
@@ -44,4 +50,5 @@
 <script src="{{ asset('/admins/vendors/validate/additional-methods.js') }}"></script>
 <script src="{{ asset('/admins/vendors/validate/messages_es.js') }}"></script>
 <script src="{{ asset('/admins/js/validate.js') }}"></script>
+<script src="{{ asset('/admins/vendors/lobibox/Lobibox.js') }}"></script>
 @endsection

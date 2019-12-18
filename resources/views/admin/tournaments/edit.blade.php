@@ -45,7 +45,6 @@
 								<option value="Club" {{ ($tournament->type == 'Club')? 'selected': '' }}>Club</option>
 							</select>	
 						</div>
-						<input type="hidden" name="state" value="1">
 						<div class="form-group col-12">
 							<div class="btn-group" role="group">
 								<button type="submit" class="btn btn-primary" action="gamer">Guardar</button>

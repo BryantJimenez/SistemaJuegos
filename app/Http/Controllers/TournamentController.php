@@ -14,8 +14,8 @@ use App\Game;
 use App\CoupleGame;
 use Illuminate\Http\Request;
 use Illuminate\Support\Str;
-use App\Http\Requests\TourtamentStoreRequest;
-use App\Http\Requests\TourtamentUpdateRequest;
+use App\Http\Requests\TournamentStoreRequest;
+use App\Http\Requests\TournamentUpdateRequest;
 
 class TournamentController extends Controller
 {
@@ -52,7 +52,7 @@ class TournamentController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(TourtamentStoreRequest $request)
+    public function store(TournamentStoreRequest $request)
     {
         $count=Tournament::where('name', request('name'))->count();
         $slug=Str::slug(request('name'), '-');
@@ -118,7 +118,7 @@ class TournamentController extends Controller
      * @param  \App\Tournament  $tournament
      * @return \Illuminate\Http\Response
      */
-    public function update(TourtamentUpdateRequest $request, $slug)
+    public function update(TournamentUpdateRequest $request, $slug)
     {
         $tournament=Tournament::where('slug', $slug)->firstOrFail();
         $tournament->fill($request->all())->save();
@@ -297,7 +297,8 @@ class TournamentController extends Controller
         $tournament=Tournament::where('slug', $slug)->firstOrFail();
         $phase=Phase::where('slug', $phase)->firstOrFail();
         $groups=Group::where('slug', $group)->where('tournament_id', $tournament->id)->firstOrFail();
-        $groups=CoupleGame::where('slug', $group)->where('tournament_id', $tournament->id)->firstOrFail();
-        return view('admin.tournaments.group', compact("tournament", "groups", "phase"));
+        $games=CoupleGroup::join('groups', 'groups.id', '=', 'couple_group.group_id')->join('couple_game', 'couple_group.id', '=', 'couple_game.couple_group1_id')->join('games', 'games.id', '=', 'couple_game.game_id')->where('groups.tournament_id', $tournament->id)->where('groups.phase_id', $phase->id)->where('groups.slug', $group)->get();
+        $num=1;
+        return view('admin.tournaments.group', compact("tournament", "groups", "phase", "games", "num"));
     }
 }

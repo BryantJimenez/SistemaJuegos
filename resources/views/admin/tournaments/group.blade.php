@@ -23,7 +23,43 @@
 @section('content')
 
 <div class="row">
-	
+	<div class="col-12">
+		@foreach($games as $game)
+		<div class="card">
+			<div class="card-body">
+				<div class="row">
+					<div class="col-12 text-center">
+						<p class="h3">Juego {{ $num++ }}</p>
+					</div>
+					<div class="col-12">
+						<div class="row d-flex-wrap-center">
+							<div class="col-4 text-center">
+								<p class="h4">Pareja 1</p>
+								<p><b>{!! coupleNames($game->couple_group1_id) !!}</b></p>
+							</div>
+							<div class="col-1 text-center">
+								<p class="h1">{{ $game->points1 }}</p>
+							</div>
+							<div class="col-1 text-center">
+								<p class="h1">-</p>
+							</div>
+							<div class="col-1 text-center">
+								<p class="h1">{{ $game->points2 }}</p>
+							</div>
+							<div class="col-4 text-center">
+								<p class="h4">Pareja 2</p>
+								<p><b>{!! coupleNames($game->couple_group2_id) !!}</b></p>
+							</div>
+						</div>
+					</div>
+					<div class="col-12 text-center">
+						<button class="btn btn-primary">Jugar</button>
+					</div>
+				</div>
+			</div>
+		</div>
+		@endforeach
+	</div>
 </div>
 
 @endsection
