@@ -10,6 +10,8 @@ use App\Phase;
 use App\Couple;
 use App\CoupleGroup;
 use App\GamerTournament;
+use App\Game;
+use App\CoupleGame;
 use Illuminate\Http\Request;
 use Illuminate\Support\Str;
 use App\Http\Requests\TourtamentStoreRequest;
@@ -210,7 +212,17 @@ class TournamentController extends Controller
                 $this->tournamentClubStart($tournament->id, $group);
             }
 
+            // Se crean los juegos de la primera vuelta
+            $couples=CoupleGroup::where('group_id', $group)->get();
+            for ($j=0; $j < 5; $j+=2) {
+                $countGame=Game::all()->count();
+                $game=Game::create(['slug' => 'juego-'.$countGame, 'type' => 2, 'state' => 1]);
+                CoupleGame::create(['couple_group1_id' => $couples[$j]->id, 'couple_group2_id' => $couples[$j+1]->id, 'game_id' => $game->id])->save();
+            }
+
         }
+
+        $tournament->fill(['state' => 2])->save();
 
         return redirect()->back()->with(['type' => 'success', 'title' => 'Torneo iniciado', 'msg' => 'El torneo ha sido iniciado exitosamente.']);
     }
@@ -283,7 +295,9 @@ class TournamentController extends Controller
     public function group($slug, $phase, $group)
     {
         $tournament=Tournament::where('slug', $slug)->firstOrFail();
-        $groups=Group::where('tournament_id', $tournament->id)->where('phase_id', 3)->get();
+        $phase=Phase::where('slug', $phase)->firstOrFail();
+        $groups=Group::where('slug', $group)->where('tournament_id', $tournament->id)->firstOrFail();
+        $groups=CoupleGame::where('slug', $group)->where('tournament_id', $tournament->id)->firstOrFail();
         return view('admin.tournaments.group', compact("tournament", "groups", "phase"));
     }
 }

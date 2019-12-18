@@ -23,7 +23,7 @@
 				<div class="row">
 					<div class="col-12 text-center">
 						<p class="h3">{{ $group->name }}</p>
-						<a class="btn btn-primary" href="{{ route('torneos.group', ['slug' => $tournament->slug]) }}">Ver Más</a>
+						<a class="btn btn-primary" href="{{ route('torneos.group', ['slug' => $tournament->slug, 'phase' => $phase->slug, 'group' => $group->slug]) }}">Ver Más</a>
 					</div>
 				</div>
 			</div>
