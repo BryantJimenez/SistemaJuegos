@@ -17,6 +17,7 @@ class CreateGamerTournamentTable extends Migration
             $table->bigIncrements('id');
             $table->bigInteger('gamer_id')->unsigned();
             $table->bigInteger('tournament_id')->unsigned();
+            $table->bigInteger('couple_id')->unsigned()->nullable();
             $table->timestamps();
 
             #Relations

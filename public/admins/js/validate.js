@@ -96,4 +96,105 @@ $(document).ready(function(){
 			}
 		});
 	});
+
+	$("button[action='club']").on("click",function(){
+		$("#formClub").validate({
+			rules:
+			{
+				name: {
+					required: true,
+					minlength: 2,
+					maxlength: 191
+				}
+			},
+			messages:
+			{
+				name: {
+					minlength: 'Escribe mínimo {0} caracteres.',
+					maxlength: 'Escribe máximo {0} caracteres.'
+				}
+			}
+		});
+	});
+
+	$("button[action='game']").on("click",function(){
+		$("#formGame").validate({
+			rules:
+			{
+				points1: {
+					required: true,
+					min: 0,
+					max: 2
+				},
+
+				points2: {
+					required: true,
+					min: 0,
+					max: 2
+				}
+			},
+			messages:
+			{
+				points1: {
+					min: 'Escribe un valor mayor o igual a {0}.',
+					max: 'Escribe un valor menor o igual a {0}.'
+				},
+
+				points2: {
+					min: 'Escribe un valor mayor o igual a {0}.',
+					max: 'Escribe un valor menor o igual a {0}.'
+				}
+			}
+		});
+	});
+
+	$("button[action='tournament']").on("click",function(){
+		$("#formTournament").validate({
+			rules:
+			{
+				name: {
+					required: true,
+					minlength: 2,
+					maxlength: 191
+				},
+
+				type: {
+					required: true
+				},
+
+				groups: {
+					required: true,
+					min: 1,
+					max: 6
+				},
+
+				couples: {
+					required: true,
+					min: 2,
+					max: 6
+				}
+			},
+			messages:
+			{
+				name: {
+					minlength: 'Escribe mínimo {0} caracteres.',
+					maxlength: 'Escribe máximo {0} caracteres.'
+				},
+
+				type: {
+					required: 'Seleccione una opción.'
+				},
+
+				groups: {
+					min: 'Escribe un valor mayor o igual a {0}.',
+					max: 'Escribe un valor menor o igual a {0}.'
+				},
+
+				couples: {
+					min: 'Escribe un valor mayor o igual a {0}.',
+					max: 'Escribe un valor menor o igual a {0}.'
+				}
+			}
+		});
+	});
 });

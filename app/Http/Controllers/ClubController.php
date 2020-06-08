@@ -22,9 +22,9 @@ class ClubController extends Controller
      */
     public function index()
     {
-        $club=Club::orderBy('id', 'DESC')->get();
+        $clubs=Club::orderBy('id', 'DESC')->get();
         $num=1;
-        return view('admin.clubs.index', compact('club', 'num'));
+        return view('admin.clubs.index', compact('clubs', 'num'));
     }
 
 

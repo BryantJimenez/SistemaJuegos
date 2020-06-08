@@ -3,6 +3,8 @@
 namespace App\Http\Controllers;
 
 use App\Gamer;
+use App\GameWinner;
+use App\TournamentWinner;
 use Illuminate\Http\Request;
 use Illuminate\Support\Str;
 use App\Http\Requests\GamerStoreRequest;
@@ -86,9 +88,29 @@ class GamerController extends Controller
      */
     public function show($slug)
     {
-
         $gamer=Gamer::where('slug', $slug)->firstOrFail();
-        return view('admin.gamers.show', compact("gamer"));
+        $games=0;
+        $winners=0;
+        $winnerTournaments=0;
+        $default=0;
+        $gamesInfo=[];
+        foreach ($gamer->couples as $couple) {
+            $winners+=GameWinner::where('couple_id', $couple->id)->count();
+
+            $winnerTournaments+=TournamentWinner::where('couple_id', $couple->id)->count();
+
+            foreach ($couple->games as $game) {
+                if ($game->state==1 || $game->state==2) {
+                    $default++;
+                }
+                $gamesInfo[$games]=['slug' => $game->slug, 'type' => $game->type, 'state' => $game->state, 'created_at' => $game->created_at];
+                $games++;
+            }
+        }
+        $loses=$games-$winners-$default;
+        $num=1;
+
+        return view('admin.gamers.show', compact("gamer", "games", "winners", "loses", "winnerTournaments", 'gamesInfo', 'num'));
     }
 
     /**

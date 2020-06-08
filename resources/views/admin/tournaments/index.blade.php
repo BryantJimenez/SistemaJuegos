@@ -25,7 +25,7 @@
 							<tr>
 								<th>#</th>
 								<th>Nombre del Torneo</th>
-								<th>Fecha</th>
+								<th>Fecha de Inicio</th>
 								<th>Tipo</th>
 								<th>Estado</th>
 								<th>Acciones</th>
@@ -37,18 +37,17 @@
 								<td>{{ $num++ }}</td>
 								<td>{{ $tournament->name }}</td>
 								<td>{{ date('d-m-Y', strtotime($tournament->start)) }}</td>
-								<td>{{ $tournament->type }}</td>
+								<td>{{ tournamentType($tournament->type) }}</td>
 								<td>{!! tournamentState($tournament->state) !!}</td>
 								<td class="d-flex">
 									@if($tournament->state==1)
-									@if($tournament->type=="Normal")
+									@if($tournament->type==1)
 									<button class="btn btn-success btn-circle btn-sm" onclick="addGamers('{{ $tournament->slug }}')"><i class="fa fa-user"></i></button>&nbsp;&nbsp;
 									@else
 									<button class="btn btn-success btn-circle btn-sm" onclick="addCouples('{{ $tournament->slug }}')"><i class="mdi mdi-account-multiple"></i></button>&nbsp;&nbsp;
 									@endif
 									@endif
 									<a class="btn btn-primary btn-circle btn-sm" href="{{ route('torneos.show', ['slug' => $tournament->slug]) }}"><i class="fa fa-trophy"></i></a>&nbsp;&nbsp;
-									<a class="btn btn-info btn-circle btn-sm" href="{{ route('torneos.edit', ['slug' => $tournament->slug]) }}"><i class="fa fa-edit"></i></a>&nbsp;&nbsp;
 									<button class="btn btn-danger btn-circle btn-sm" onclick="deleteTournament('{{ $tournament->slug }}')"><i class="fa fa-trash"></i></button>
 								</td>
 							</tr>

@@ -23,7 +23,7 @@
 				@include('admin.partials.errors')
 
 				<h6 class="card-subtitle">Campos obligatorios (<b class="text-danger">*</b>)</h6>
-				<form action="{{ route('torneos.store') }}" method="POST" class="form">
+				<form action="{{ route('torneos.store') }}" method="POST" class="form" id="formTournament">
 					@csrf
 					<div class="row">
 						<div class="form-group col-lg-6 col-md-6 col-12">
@@ -31,16 +31,20 @@
 							<input class="form-control" type="text" name="name" required placeholder="Introduzca un nombre" value="{{ old('name') }}">
 						</div>
 						<div class="form-group col-lg-6 col-md-6 col-12">
+							<label class="col-form-label">Tipo<b class="text-danger">*</b></label>
+							<select class="form-control" name="type" required>
+								<option value="">Seleccione</option>
+								<option value="1" @if(old('type')==1) selected @endif>Normal</option>
+								<option value="2" @if(old('type')==2) selected @endif>Interclubes</option>
+							</select>
+						</div>
+						<div class="form-group col-lg-6 col-md-6 col-12">
 							<label class="col-form-label">Máximo de Grupos<b class="text-danger">*</b></label>
 							<input class="form-control numberTournament" type="text" name="groups" required placeholder="Introduzca el número máximo de grupos" value="{{ old('groups') }}">
 						</div>
 						<div class="form-group col-lg-6 col-md-6 col-12">
-							<label class="col-form-label">Tipo<b class="text-danger">*</b></label>
-							<select class="form-control" name="type" required>
-								<option value="">Seleccione</option>
-								<option value="Normal" @if(old('type')=="Normal") selected @endif>Normal</option>
-								<option value="Club" @if(old('type')=="Club") selected @endif>Club</option>
-							</select>
+							<label class="col-form-label">Máximo de Parejas<b class="text-danger">*</b></label>
+							<input class="form-control numberTournament" type="text" name="couples" required placeholder="Introduzca el número máximo de parejas" value="{{ old('couples') }}">
 						</div>
 						<div class="form-group col-lg-6 col-md-6 col-12">
 							<label class="col-form-label">Fecha de Inicio<b class="text-danger">*</b></label>
@@ -48,7 +52,7 @@
 						</div>
 						<div class="form-group col-12">
 							<div class="btn-group" role="group">
-								<button type="submit" class="btn btn-primary" action="gamer">Guardar</button>
+								<button type="submit" class="btn btn-primary" action="tournament">Guardar</button>
 								<a href="{{ route('torneos.index') }}" class="btn btn-secondary">Volver</a>
 							</div>
 						</div>

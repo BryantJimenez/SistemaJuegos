@@ -17,10 +17,12 @@ class CreateTournamentsTable extends Migration
             $table->bigIncrements('id');
             $table->string('name');
             $table->string('slug')->unique();
-            $table->integer('groups')->unsigned();
-            $table->string('type');
-            $table->string('state')->default(1);
+            $table->integer('groups')->unsigned()->default(6);
+            $table->integer('couples')->unsigned()->default(6);
+            $table->enum('type', [1, 2])->desault(1);
+            $table->enum('state', [1, 2, 3])->default(1);
             $table->date('start');
+            $table->date('end')->nullable();
             $table->timestamps();
         });
     }

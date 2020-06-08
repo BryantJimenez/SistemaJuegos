@@ -11,4 +11,8 @@ class Winner extends Model
 	public function tournaments() {
 		return $this->belongsToMany(Tournament::class)->withTimestamps();
 	}
+
+	public function game_winner() {
+        return $this->hasOne(GameWinner::class);
+    }
 }

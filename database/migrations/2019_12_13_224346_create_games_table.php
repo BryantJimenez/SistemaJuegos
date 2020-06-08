@@ -16,11 +16,14 @@ class CreateGamesTable extends Migration
         Schema::create('games', function (Blueprint $table) {
             $table->bigIncrements('id');
             $table->string('slug')->unique();
-            $table->enum('type', [1, 2]);
-            $table->enum('state', [1, 2, 3]);
-            $table->integer('points1')->unsigned()->default(0);
-            $table->integer('points2')->unsigned()->default(0);
+            $table->enum('type', [1, 2])->default(1);
+            $table->enum('state', [1, 2, 3])->default(1);
+            $table->enum('rond', [1, 2, 3, 4, 5])->nullable();
+            $table->bigInteger('group_id')->unsigned()->nullable();
             $table->timestamps();
+
+            #Relations
+            $table->foreign('group_id')->references('id')->on('groups')->onDelete('cascade')->onUpdate('cascade');
         });
     }
 

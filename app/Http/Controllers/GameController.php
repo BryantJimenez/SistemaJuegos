@@ -7,10 +7,9 @@ use App\Gamer;
 use App\Couple;
 use App\CoupleGroup;
 use App\CoupleGame;
+use App\CoupleGamer;
 use Illuminate\Http\Request;
-use Illuminate\Http\Requests\GameStoreRequest;
-use Illuminate\Http\Requests\GameUpdateRequest;
-
+use App\Http\Requests\GameStoreRequest;
  
 class GameController extends Controller
 {
@@ -24,7 +23,7 @@ class GameController extends Controller
      */
     public function index()
     {
-        $games=Game::where('type', 1)->orderBy('id', 'DESC')->get();
+        $games=Game::where('state', 2)->orWhere('state', 3)->orderBy('id', 'DESC')->get();
         $num=1;
         return view('admin.games.index', compact('games', 'num'));
     }
@@ -56,13 +55,13 @@ class GameController extends Controller
         $gamer3=Gamer::where('slug', $couple2[0])->firstOrFail();
         $gamer4=Gamer::where('slug', $couple2[1])->firstOrFail();
 
-        $coupleArray1=array('player1_id' => $gamer1->id, 'player2_id' => $gamer2->id);
-        $couples1=Couple::create($coupleArray1);
-        $coupleArray2=array('player1_id' => $gamer3->id, 'player2_id' => $gamer4->id);
-        $couples2=Couple::create($coupleArray2);
+        $couples1=Couple::create();
+        $couples2=Couple::create();
 
-        $coupleGroup1=CoupleGroup::create(['couple_id' => $couples1->id]);
-        $coupleGroup2=CoupleGroup::create(['couple_id' => $couples2->id]);
+        CoupleGamer::create(['couple_id' => $couples1->id, 'gamer_id' => $gamer1->id]);
+        CoupleGamer::create(['couple_id' => $couples1->id, 'gamer_id' => $gamer2->id]);
+        CoupleGamer::create(['couple_id' => $couples2->id, 'gamer_id' => $gamer3->id]);
+        CoupleGamer::create(['couple_id' => $couples2->id, 'gamer_id' => $gamer4->id]);
 
         $count=Game::all()->count();
         if (request('points1')==2 || request('points2')==2) {
@@ -71,12 +70,13 @@ class GameController extends Controller
             $state=2;
         }
 
-        $data=array('slug' => 'juego-'.$count, 'type' => 1, 'state' => $state, 'points1' => request('points1'), 'points2' => request('points2'));
+        $data=array('slug' => 'juego-'.$count, 'state' => $state);
         $game=Game::create($data);
 
-        $coupleGame=CoupleGame::create(['couple_group1_id' => $coupleGroup1->id, 'couple_group2_id' => $coupleGroup2->id, 'game_id' => $game->id])->save();
+        $coupleGame1=CoupleGame::create(['couple_id' => $couples1->id, 'game_id' => $game->id, 'points' => request('points1')])->save();
+        $coupleGame2=CoupleGame::create(['couple_id' => $couples2->id, 'game_id' => $game->id, 'points' => request('points2')])->save();
 
-        if ($coupleGame) {
+        if ($coupleGame1 && $coupleGame2) {
             return redirect()->route('juegos.index')->with(['type' => 'success', 'title' => 'Registro exitoso', 'msg' => 'El juego ha sido registrado exitosamente.']);
         } else {
             return redirect()->route('juegos.index')->with(['type' => 'error', 'title' => 'Registro fallido', 'msg' => 'Ha ocurrido un error durante el proceso, intentelo nuevamente.']);
@@ -92,43 +92,15 @@ class GameController extends Controller
     public function show($slug)
     {
         $game=Game::where('slug', $slug)->firstOrFail();
+        
         echo json_encode([
-            'type' => $game->type,
-            'state' => gameType($game->state),
-            'points1' => $game->points1,
-            'points2' => $game->points2
+            'type' => gameType($game->type),
+            'state' => gameState($game->state),
+            'points1' => $game->couple_game[0]->points,
+            'points2' => $game->couple_game[1]->points,
+            'couple1' => couplesNames($game->couples, 1, 1),
+            'couple2' => couplesNames($game->couples, 2, 1)
         ]);
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  \App\Game  $game
-     * @return \Illuminate\Http\Response
-     */
-    public function edit($slug)
-    {
-        $game=Game::where('slug', $slug)->firstOrFail();
-        return view('admin.games.edit', compact("game"));
-    }
-
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Game  $game
-     * @return \Illuminate\Http\Response
-     */
-    public function update(GameUpdateRequest $request, $slug)
-    {
-        $game=Game::where('slug', $slug)->firstOrFail();
-        $game->fill($request->all())->save();
-
-        if ($game) {
-            return redirect()->route('juegos.edit', ['slug' => $slug])->with(['type' => 'success', 'title' => 'Edición exitosa', 'msg' => 'El Juego ha sido editado exitosamente.']);
-        } else {
-            return redirect()->route('juegos.edit', ['slug' => $slug])->with(['type' => 'error', 'title' => 'Edición fallida', 'msg' => 'Ha ocurrido un error durante el proceso, intentelo nuevamente.']);
-        }
     }
 
     /**

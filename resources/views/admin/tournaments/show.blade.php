@@ -16,27 +16,45 @@
 @section('content')
 
 <div class="row">
-	<div class="col-6">
+	@isset($winners)
+	<div class="col-12">
+		<div class="card">
+			<div class="card-body">
+				<div class="row">
+					<div class="col-12 text-center">
+						<p class="h2">GANADORES</p>
+					</div>
+					<div class="col-lg-6 col-md-6 col-12 text-center">
+						<p class="h3"><i class="fa fa-trophy"></i> Primer Lugar <i class="fa fa-trophy"></i></p>
+						<p>{!! couplesNames($winners[0]->couple, 3) !!}</p>
+					</div>
+					<div class="col-lg-6 col-md-6 col-12 text-center">
+						<p class="h3"><i class="fa fa-trophy"></i> Segundo Lugar <i class="fa fa-trophy"></i></p>
+						<p>{!! couplesNames($winners[1]->couple, 3) !!}</p>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+	@endif
+
+	<div class="col-lg-6 col-md-6 col-12">
 		<div class="card">
 			<div class="card-body">
 				<div class="row">
 					<div class="col-12">
 						<p class="h3 text-center">Datos del Torneo</p>
 						<p><b>Nombre:</b> {{ $tournament->name }}</p>
-						<p><b>Tipo:</b> {{ $tournament->type }}</p>
+						<p><b>Tipo:</b> {{ tournamentType($tournament->type) }}</p>
 						<p><b>Participantes:</b> {{ $participants }}</p>
-						<p><b>Grupos de primera fase:</b> {{ $tournament->groups }}</p>
+						<p><b>Grupos de la primera fase:</b> {{ $tournament->groups }}</p>
+						<p><b>Parejas de la primera fase:</b> {{ $tournament->couples }}</p>
 						<p><b>Fecha de inicio:</b> {{ date('d-m-Y', strtotime($tournament->start)) }}</p>
 						<p><b>Estado:</b> {!! tournamentState($tournament->state) !!}</p>
 					</div>
-					<div class="col-12">
+					<div class="col-12 m-b-10">
 						<div class="btn-group" role="group">
-							@if($tournament->type=="Normal")
 							<a class="btn btn-success" href="{{ route('torneos.list.gamers', ['slug' => $tournament->slug]) }}">Jugadores</a>
-							@else
-							<a class="btn btn-success" href="{{ route('torneos.list.couples', ['slug' => $tournament->slug]) }}">Parejas</a>
-							@endif
-							<a class="btn btn-info" href="{{ route('torneos.edit', ['slug' => $tournament->slug]) }}">Editar</a>
 							<button class="btn btn-danger" onclick="deleteTournament('{{ $tournament->slug }}')">Eliminar</button>
 							<a href="{{ route('torneos.index') }}" class="btn btn-secondary">Volver</a>
 						</div>
@@ -46,17 +64,56 @@
 		</div>
 	</div>
 
-	<div class="col-6">
-		@if($tournament->groups*12-$participants>0 && $tournament->state==1)
+	<div class="col-lg-6 col-md-6 col-12">
+		@if(isset($totalGames) && isset($gamesFinish) && isset($currentPhase))
+		@if($totalGames==$gamesFinish && $currentPhase->phase_id==3 && $tournament->state==2)
+		<div class="col-12">
+			<div class="card">
+				<div class="card-body">
+					<div class="row">
+						<div class="col-12 text-center">
+							<p class="h3">Ya han culminado todos los juegos del torneo, finalizalo para conocer al ganador.</p>
+							<form method="POST" action="{{ route('torneos.final', ['slug' => $tournament->slug]) }}">
+								@csrf
+								<button type="submit" class="btn btn-primary">Finalizar Torneo</button>
+							</form>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+		@endif
+
+		@if($totalGames==$gamesFinish && $tournament->state==2 && $currentPhase->phase_id<3)
+		<div class="col-12">
+			<div class="card">
+				<div class="card-body">
+					<div class="row">
+						<div class="col-12 text-center">
+							<p class="h3">Ya han culminado todos los juegos de la fase actual, avanza a la siguiente.</p>
+							<form method="POST" action="{{ route('torneos.next.phase', ['slug' => $tournament->slug]) }}">
+								@csrf
+								<input type="hidden" name="phase" value="{{ $phase->slug }}">
+								<button type="submit" class="btn btn-primary">Siguiente Fase</button>
+							</form>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+		@endif
+		@endif
+
+		@if($tournament->groups*($tournament->couples*2)-$participants>0 && $tournament->state==1)
 		<div class="card">
 			<div class="card-body">
 				<div class="row">
 					<div class="col-12 text-center">
 						<p class="h3">Aún no has ingresado a todos los participantes!</p>
-						@if($tournament->type=="Normal")
-						<button type="button" class="btn btn-success btn-sm btn-circle" onclick="addGamers('{{ $tournament->slug }}')">Agregar Jugadores</button>
+						@if($tournament->type==1)
+						<button type="button" class="btn btn-success" onclick="addGamers('{{ $tournament->slug }}')">Agregar Jugadores</button>
 						@else
-						<button type="button" class="btn btn-success btn-sm btn-circle" onclick="addCouples('{{ $tournament->slug }}')">Agregar Pareja</i></button>
+						<button type="button" class="btn btn-success" onclick="addCouples('{{ $tournament->slug }}')">Agregar Pareja</button>
 						@endif
 					</div>
 				</div>
@@ -64,13 +121,16 @@
 		</div>
 		@endif
 
-		@if($tournament->groups*12-$participants==0 && $tournament->state==1)
+		@if($tournament->groups*($tournament->couples*2)-$participants==0 && $tournament->state==1)
 		<div class="card">
 			<div class="card-body">
 				<div class="row">
 					<div class="col-12 text-center">
 						<p class="h3">Ya puedes iniciar el torneo!</p>
-						<a class="btn btn-dark" href="{{ route('torneos.start', ['slug' => $tournament->slug]) }}">Empezar Torneo</a>
+						<form method="POST" action="{{ route('torneos.start', ['slug' => $tournament->slug]) }}">
+							@csrf
+							<button type="submit" class="btn btn-dark">Empezar Torneo</button>
+						</form>
 					</div>
 				</div>
 			</div>

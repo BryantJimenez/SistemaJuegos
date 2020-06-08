@@ -12,13 +12,13 @@ class TournamentsTableSeeder extends Seeder
     public function run()
     {
         App\Tournament::create(
-    		['name' => 'Torneo normal', 'slug' => 'torneo-normal', 'groups' => 4, 'type' => 'Normal', 'state' => 1, 'start' => '2019-12-16']
+    		['name' => 'Torneo normal', 'slug' => 'torneo-normal', 'groups' => 4, 'type' => 1, 'start' => '2019-12-16']
     	);
         App\Tournament::create(
-            ['name' => 'Tornel de clubes', 'slug' => 'torneo-de-clubes', 'groups' => 5, 'type' => 'Club', 'state' => 1, 'start' => '2019-12-16']
+            ['name' => 'Tornel de clubes', 'slug' => 'torneo-de-clubes', 'groups' => 5, 'type' => 2, 'start' => '2019-12-16']
         );
         App\Tournament::create(
-            ['name' => 'Torneo para probar', 'slug' => 'torneo-para-probar', 'groups' => 3, 'type' => 'Normal', 'state' => 1, 'start' => '2019-12-16']
+            ['name' => 'Torneo para probar', 'slug' => 'torneo-para-probar', 'groups' => 3, 'type' => 1, 'state' => 1, 'start' => '2019-12-16']
         );
     }
 }

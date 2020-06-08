@@ -19,4 +19,8 @@ class Group extends Model
 	public function couples() {
         return $this->belongsToMany(Couple::class)->withTimestamps();
     }
+
+    public function games() {
+    	return $this->hasMany(Game::class);
+    }
 }

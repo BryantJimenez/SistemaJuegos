@@ -1,7 +1,12 @@
 @extends('layouts.admin')
 
+@if($phase->name=='Final')
+@section('title', $phase->name." - Grupo Final")
+@section('page-title', $phase->name." - Grupo Final")
+@else
 @section('title', $phase->name." - ".$groups->name)
 @section('page-title', $phase->name." - ".$groups->name)
+@endif
 
 @section('breadcrumb')
 <li class="breadcrumb-item"><a href="{{ route('torneos.index') }}">Torneos</a></li>
@@ -25,6 +30,54 @@
 
 <div class="row">
 	<div class="col-12">
+		@if($phase->slug=='fase-de-grupos')
+		<a href="{{ route('torneos.phase.groups', ['slug' => $tournament->slug]) }}" class="btn btn-secondary m-b-10">Volver</a>
+		@elseif($phase->slug=='semifinal')
+		<a href="{{ route('torneos.phase.semifinal', ['slug' => $tournament->slug]) }}" class="btn btn-secondary m-b-10">Volver</a>
+		@else
+		<a href="{{ route('torneos.phase.final', ['slug' => $tournament->slug]) }}" class="btn btn-secondary m-b-10">Volver</a>
+		@endif
+	</div>
+
+	@if($gamesRonds==$gamesFinish && $gamesFinish<$totalGames && $tournament->state==2)
+	<div class="col-12">
+		<div class="card">
+			<div class="card-body">
+				<div class="row">
+					<div class="col-12 text-center">
+						<p class="h3">Ya no hay juegos pendientes, avanza a la siguiente vuelta.</p>
+						<form method="POST" action="{{ route('torneos.next.rond', ['slug' => $tournament->slug]) }}">
+							@csrf
+							<input type="hidden" name="phase" value="{{ $phase->slug }}">
+							<input type="hidden" name="group" value="{{ $groups->slug }}">
+							<button type="submit" class="btn btn-primary">Siguiente Vuelta</button>
+						</form>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+	@endif
+
+	@if($totalGames==$gamesFinish && $phase->name=="Final" && $tournament->state==2)
+	<div class="col-12">
+		<div class="card">
+			<div class="card-body">
+				<div class="row">
+					<div class="col-12 text-center">
+						<p class="h3">Ya han culminado todos los juegos del torneo, finalizalo para conocer al ganador.</p>
+						<form method="POST" action="{{ route('torneos.final', ['slug' => $tournament->slug]) }}">
+							@csrf
+							<button type="submit" class="btn btn-primary">Finalizar Torneo</button>
+						</form>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+	@endif
+
+	<div class="col-12">
 		@foreach($games as $game)
 		<div class="card">
 			<div class="card-body">
@@ -36,24 +89,30 @@
 						<div class="row d-flex-wrap-center">
 							<div class="col-4 text-center">
 								<p class="h4">Pareja 1</p>
-								<p><b>{!! coupleNames($game->couple_group1_id) !!}</b></p>
+								<p>{!! couplesNames($game->couples, 1) !!}</p>
+								@if($tournament->type==2)
+								<p class="badge badge-success">{{ $game->couples[0]->club->name }}</p>
+								@endif
 							</div>
 							<div class="col-1 text-center">
-								<p class="h1">{{ $game->points1 }}</p>
+								<p class="h1">{{ $game->couple_game[0]->points }}</p>
 							</div>
 							<div class="col-1 text-center">
 								<p class="h1">-</p>
 							</div>
 							<div class="col-1 text-center">
-								<p class="h1">{{ $game->points2 }}</p>
+								<p class="h1">{{ $game->couple_game[1]->points }}</p>
 							</div>
 							<div class="col-4 text-center">
 								<p class="h4">Pareja 2</p>
-								<p><b>{!! coupleNames($game->couple_group2_id) !!}</b></p>
+								<p>{!! couplesNames($game->couples, 2) !!}</p>
+								@if($tournament->type==2)
+								<p class="badge badge-success">{{ $game->couples[1]->club->name }}</p>
+								@endif
 							</div>
 						</div>
 					</div>
-					@if(2>$game->points1 && 2>$game->points2)
+					@if(2>$game->couple_game[0]->points && 2>$game->couple_game[1]->points)
 					<div class="col-12 text-center">
 						<button class="btn btn-primary" onclick="addGame('{{ $game->slug }}')">Jugar</button>
 					</div>
@@ -62,12 +121,6 @@
 			</div>
 		</div>
 		@endforeach
-	</div>
-	<div class="col-12">
-		<div class="btn-group" role="group">
-			<a class="btn btn-primary" href="#">Siguiente Vuelta</a>
-			<a href="{{ route('torneos.index') }}" class="btn btn-secondary">Volver</a>
-		</div>
 	</div>
 </div>
 

@@ -8,5 +8,5 @@ class GamerTournament extends Model
 {
 	protected $table = 'gamer_tournament';
 
-    protected $fillable = ['gamer_id', 'tournament_id'];
+    protected $fillable = ['gamer_id', 'tournament_id', 'couple_id'];
 }

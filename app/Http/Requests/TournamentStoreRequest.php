@@ -25,7 +25,8 @@ class TournamentStoreRequest extends FormRequest
     {
         return [
             'name' => 'required|string|min:2|max:191',
-            'groups' => 'required|integer|min:2|max:6',
+            'groups' => 'required|integer|min:1|max:6',
+            'couples' => 'required|integer|min:2|max:6',
             'start' => 'required|date',
             'type' => 'required|string'
         ];

@@ -43,20 +43,21 @@ Route::get('/torneos', 'TournamentController@index')->name('torneos.index');
 Route::get('/torneos/registrar', 'TournamentController@create')->name('torneos.create');
 Route::post('/torneos', 'TournamentController@store')->name('torneos.store');
 Route::get('/torneos/{slug}', 'TournamentController@show')->name('torneos.show');
-Route::get('/torneos/{slug}/editar', 'TournamentController@edit')->name('torneos.edit');
 Route::put('/torneos/{slug}', 'TournamentController@update')->name('torneos.update');
 Route::delete('/torneos/{slug}', 'TournamentController@destroy')->name('torneos.destroy');
 Route::get('/torneos/{slug}/agregar', 'TournamentController@addGamers')->name('torneos.add.gamers');
 Route::post('/torneos/{slug}/agregar', 'TournamentController@addGamersStore')->name('torneos.store.gamers');
 Route::get('/torneos/{slug}/jugadores', 'TournamentController@listGamers')->name('torneos.list.gamers');
-Route::get('/torneos/{slug}/parejas', 'TournamentController@listCouples')->name('torneos.list.couples');
-Route::get('/torneos/{slug}/iniciar', 'TournamentController@start')->name('torneos.start');
+Route::post('/torneos/{slug}/iniciar', 'TournamentController@start')->name('torneos.start');
 Route::get('/torneos/{slug}/fase-de-grupos', 'TournamentController@phaseGroups')->name('torneos.phase.groups');
 Route::get('/torneos/{slug}/semifinal', 'TournamentController@semifinal')->name('torneos.phase.semifinal');
 Route::get('/torneos/{slug}/final', 'TournamentController@finale')->name('torneos.phase.final');
 Route::get('/torneos/{slug}/{phase}/{group}', 'TournamentController@group')->name('torneos.group');
 Route::get('/torneos/{slug}/juego', 'TournamentController@game')->name('torneos.add.game');
 Route::post('/torneos/{slug}/juego', 'TournamentController@gameStore')->name('torneos.store.game');
+Route::post('/torneos/{slug}/ronda', 'TournamentController@nextRond')->name('torneos.next.rond');
+Route::post('/torneos/{slug}/fase', 'TournamentController@nextPhase')->name('torneos.next.phase');
+Route::post('/torneos/{slug}/finale', 'TournamentController@finalTournament')->name('torneos.final');
 
 //Clubes
 Route::get('/clubes', 'ClubController@index')->name('clubes.index');
@@ -72,8 +73,6 @@ Route::get('/juegos', 'GameController@index')->name('juegos.index');
 Route::get('/juegos/registrar', 'GameController@create')->name('juegos.create');
 Route::post('/juegos', 'GameController@store')->name('juegos.store');
 Route::get('/juegos/{slug}', 'GameController@show')->name('juegos.show');
-Route::get('/juegos/{slug}/editar', 'GameController@edit')->name('juegos.edit');
-Route::put('/juegos/{slug}', 'GameController@update')->name('juegos.update');
 Route::delete('/juegos/{slug}', 'GameController@destroy')->name('juegos.destroy');
 
 // Parejas

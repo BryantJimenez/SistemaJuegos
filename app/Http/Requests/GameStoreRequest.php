@@ -25,8 +25,7 @@ class GameStoreRequest extends FormRequest
     {
         return [
             'couple1' => 'required|array|max:2',
-            'couple1' => 'required|array|max:2',
-            'type' => 'required|integer|max:1',
+            'couple2' => 'required|array|max:2',
             'points1' => 'required|integer|min:0|max:2',
             'points2' => 'required|integer|min:0|max:2'
         ];

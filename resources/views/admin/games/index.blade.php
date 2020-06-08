@@ -23,7 +23,9 @@
 						<thead>
 							<tr>
 								<th>#</th>
-								<th>Tipo</th>
+								<th>Tipo del Juego</th>
+								<th>Estado</th>
+								<th>Fecha</th>
 								<th>Acciones</th>
 							</tr>
 						</thead>
@@ -31,10 +33,11 @@
 							@foreach($games as $game)
 							<tr>
 								<td>{{ $num++ }}</td>
-								<td>{!!  gameType($game->type) !!}</td>
+								<td>{!! gameType($game->type) !!}</td>
+								<td>{!! gameState($game->state) !!}</td>
+								<td>{{ date('d-m-Y', strtotime($game->created_at)) }}</td>
 								<td class="d-flex">
-									<button class="btn btn-primary btn-circle btn-sm" onclick="showGame('{{ $game->slug }}')"><i class="mdi mdi-account-card-details"></i></button>&nbsp;&nbsp;
-									<a class="btn btn-info btn-circle btn-sm" href="{{ route('juegos.edit', ['slug' => $game->slug]) }}"><i class="fa fa-edit"></i></a>&nbsp;&nbsp;
+									<button class="btn btn-primary btn-circle btn-sm" onclick="showGame('{{ $game->slug }}')"><i class="mdi mdi-cards-playing-outline"></i></button>&nbsp;&nbsp;
 									<button class="btn btn-danger btn-circle btn-sm" onclick="deleteGame('{{ $game->slug }}')"><i class="fa fa-trash"></i></button>
 								</td>
 							</tr>
@@ -51,7 +54,7 @@
 	<div class="modal-dialog" role="document">
 		<div class="modal-content">
 			<div class="modal-header">
-				<h5 class="modal-title">Información del Usuario</h5>
+				<h5 class="modal-title">Información del Juego</h5>
 				<button type="button" class="close" data-dismiss="modal" aria-label="Close">
 					<span aria-hidden="true">&times;</span>
 				</button>
@@ -65,16 +68,23 @@
 					<div class="col-6">	
 						<label class="col-form-label">Estado</label>
 						<p id="stateGame"></p>
+					</div>
+					<div class="col-6">
+						<label class="col-form-label">Pareja 1</label>
+						<p id="couple1Game"></p>
+					</div>
+					<div class="col-6">	
+						<label class="col-form-label">Pareja 2</label>
+						<p id="couple2Game"></p>
 					</div>	
 					<div class="col-6">
-						<label class="col-form-label">Puntos "Jugador 1"</label>
+						<label class="col-form-label">Puntos de Pareja 1</label>
 						<p id="points1Game"></p>
 					</div>
 					<div class="col-6">	
-						<label class="col-form-label">Puntos "Jugador 2"</label>
+						<label class="col-form-label">Puntos de Pareja 2</label>
 						<p id="points2Game"></p>
-					</div>	
-					
+					</div>
 				</div>
 			</div>
 			<div class="modal-footer">

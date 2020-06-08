@@ -15,14 +15,13 @@ class CreateCoupleGameTable extends Migration
     {
         Schema::create('couple_game', function (Blueprint $table) {
             $table->bigIncrements('id');
-            $table->bigInteger('couple_group1_id')->unsigned();
-            $table->bigInteger('couple_group2_id')->unsigned();
+            $table->bigInteger('couple_id')->unsigned();
             $table->bigInteger('game_id')->unsigned();
+            $table->integer('points')->unsigned()->default(0);
             $table->timestamps();
 
             #Relations
-            $table->foreign('couple_group1_id')->references('id')->on('couple_group')->onDelete('cascade')->onUpdate('cascade');
-            $table->foreign('couple_group2_id')->references('id')->on('couple_group')->onDelete('cascade')->onUpdate('cascade');
+            $table->foreign('couple_id')->references('id')->on('couples')->onDelete('cascade')->onUpdate('cascade');
             $table->foreign('game_id')->references('id')->on('games')->onDelete('cascade')->onUpdate('cascade');
         });
     }

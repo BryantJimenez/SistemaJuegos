@@ -28,14 +28,14 @@
 							</tr>
 						</thead>
 						<tbody>
-							@foreach($club as $c)
+							@foreach($clubs as $club)
 							<tr>
-								<td>{{ $num }}</td>
-								<td>{{ $c->name }}</td>
+								<td>{{ $num++ }}</td>
+								<td>{{ $club->name }}</td>
 								<td class="d-flex">
-									<a class="btn btn-primary btn-circle btn-sm" onclick="showClub( '{{  $c->slug }}' )"><i class="mdi mdi-account-card-details"></i></a>&nbsp;&nbsp;
-									<a class="btn btn-info btn-circle btn-sm" href="{{ route('clubes.edit', ['slug' => $c->slug]) }}"><i class="fa fa-edit"></i></a>&nbsp;&nbsp;
-									<button class="btn btn-danger btn-circle btn-sm" onclick="deleteClub('{{ $c->slug }}')"><i class="fa fa-trash"></i></button>
+									<button class="btn btn-primary btn-circle btn-sm" onclick="showClub( '{{ $club->slug }}' )"><i class="fa fa-building"></i></button>&nbsp;&nbsp;
+									<a class="btn btn-info btn-circle btn-sm" href="{{ route('clubes.edit', ['slug' => $club->slug]) }}"><i class="fa fa-edit"></i></a>&nbsp;&nbsp;
+									<button class="btn btn-danger btn-circle btn-sm" onclick="deleteClub('{{ $club->slug }}')"><i class="fa fa-trash"></i></button>
 								</td>
 							</tr>
 							@endforeach

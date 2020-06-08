@@ -13,6 +13,6 @@ class Gamer extends Model
     }
 
     public function couples() {
-        return $this->hasMany(Couple::class);
+        return $this->belongsToMany(Couple::class)->withTimestamps();
     }
 }

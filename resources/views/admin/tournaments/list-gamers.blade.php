@@ -4,13 +4,12 @@
 @section('page-title', 'Lista de jugadores por Torneos')
 
 @section('links')
-<link rel="stylesheet" href="{{ asset('/admins/vendors/multiselect/bootstrap.multiselect.css') }}">
 <link rel="stylesheet" href="{{ asset('/admins/vendors/lobibox/Lobibox.min.css') }}">
 @endsection
 
 @section('breadcrumb')
-<li class="breadcrumb-item">Torneo</li>
-<li class="breadcrumb-item active">Lista</li>
+<li class="breadcrumb-item"><a href="{{ route('torneos.index') }}">Torneos</a></li>
+<li class="breadcrumb-item"><a href="{{ route('torneos.show', ['slug' => $tournament->slug]) }}">{{ $tournament->name }}</a></li>
 <li class="breadcrumb-item active">Jugadores</li>
 @endsection
 
@@ -25,7 +24,7 @@
 						<thead>
 							<tr>
 								<th>#</th>
-								<th>Nombre </th>
+								<th>Nombre</th>
 								<th>Apellido</th>
 							</tr>
 						</thead>
@@ -49,8 +48,6 @@
 @endsection
 
 @section('script')
-<script src="{{ asset('/admins/vendors/multiselect/bootstrap-multiselect.js') }}"></script>
-<script src="{{ asset('/admins/vendors/lobibox/Lobibox.js') }}"></script>
 <script src="{{ asset('/admins/vendors/datatables/jquery.dataTables.min.js') }}"></script>
 <script src="{{ asset('/admins/vendors/datatables/buttons/dataTables.buttons.min.js') }}"></script>
 <script src="{{ asset('/admins/vendors/datatables/buttons/dataTables.flash.min.js') }}"></script>
